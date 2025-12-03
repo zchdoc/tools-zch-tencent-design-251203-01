@@ -33,19 +33,21 @@
               <t-icon name="help-circle" />
             </t-button>
           </t-tooltip>
-          <t-dropdown trigger="click">
+          <t-dropdown trigger="click" :min-column-width="120">
             <t-button theme="default" shape="square" variant="text">
               <translate-icon />
             </t-button>
-            <t-dropdown>
-              <t-dropdown-item
-                v-for="(lang, index) in langList"
-                :key="index"
-                :value="lang.value"
-                @click="(options) => changeLang(options.value as string)"
-                >{{ lang.content }}</t-dropdown-item
-              ></t-dropdown
-            >
+            <template #dropdown>
+              <t-dropdown-menu>
+                <t-dropdown-item
+                  v-for="(lang, index) in langList"
+                  :key="index"
+                  :value="lang.value"
+                  @click="changeLang(lang.value as string)"
+                  >{{ lang.content }}</t-dropdown-item
+                >
+              </t-dropdown-menu>
+            </template>
           </t-dropdown>
           <t-dropdown :min-column-width="120" trigger="click">
             <template #dropdown>
