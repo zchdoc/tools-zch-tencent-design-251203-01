@@ -1,0 +1,15 @@
+export default {
+  selectGroup: 'Select Group',
+  selectedGroups: 'Selected Groups',
+  selectedGroupsTitle: 'Manage Bookmark Groups',
+  selectAll: 'Select All',
+  clearAll: 'Clear All',
+  invertSelect: 'Invert',
+  save: 'Save',
+  searchPlaceholder: 'Search bookmarks...',
+  totalBookmarks: 'Total Bookmarks',
+  totalGroups: 'Groups',
+  noBookmarks: 'No bookmarks',
+  noSelectedGroups: 'No selected groups',
+  pleaseSelectGroup: 'Please select bookmark groups to display',
+};

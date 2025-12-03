@@ -1,0 +1,15 @@
+export default {
+  selectGroup: '选择分组',
+  selectedGroups: '已选分组',
+  selectedGroupsTitle: '管理书签分组',
+  selectAll: '全选',
+  clearAll: '清空',
+  invertSelect: '反选',
+  save: '保存',
+  searchPlaceholder: '搜索书签...',
+  totalBookmarks: '书签总数',
+  totalGroups: '分组数',
+  noBookmarks: '暂无书签',
+  noSelectedGroups: '暂无选中分组',
+  pleaseSelectGroup: '请选择要显示的书签分组',
+};
