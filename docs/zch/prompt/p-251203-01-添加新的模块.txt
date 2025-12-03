@@ -1,0 +1,11 @@
+当前项目是一个TDesign 页面模板项目，现在需要添加一个书签模块，
+数千模块下面还有4个子模块,分别是:zch,chrome,zchFromApi,chromeFromApi
+如图 docs/zch/prompt/bookmarks-exp-1.png 所示, docs/zch/prompt/bookmarks-exp-1.png 这个图中
+显示的是我老的reacct项目的截图,所以我要把它搬到当前vue项目中,老的代码在:
+docs/zch/prompt/next-shadcn-dashboard-starter-dev/src/app/dashboard/bookmark/zch/page.tsx
+注意老的项目中所有的书签抽离成了一个简单的常量文件,方便我后期添加修改删除,方便维护,原常量文件在:
+docs/zch/prompt/next-shadcn-dashboard-starter-dev/src/constants/bookmarks-zch.ts
+新的这个vue项目页抽离成单独的常量文件,方便后期维护.
+并且在新的vue项目中,我想把书签设计成卡片格式的,如 docs/zch/prompt/bookmarks-exp-2.png 所示,
+让所有书签看起来长度一致,美观整齐一些.
+我们只需要先实现 zch 这个子书签模块就行了,其他三个先忽略后期实现.
