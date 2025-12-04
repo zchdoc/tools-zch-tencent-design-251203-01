@@ -118,54 +118,10 @@ export const bookmarkDataZch: BookmarkData = {
     title: 'Tools',
     links: [
       {
-        title: 'Pulse-Water-Billing-Calc',
-        url: 'https://navgit.wwzh.xyz/pages/pulse-water-billing-calc/pulse-water-billing-calc.html',
-      },
-      {
-        title: 'Localize',
-        url: 'https://navgit.wwzh.xyz/pages/chrome-bookmarks-simple/index.html?name=bscus',
-      },
-      {
-        title: 'Ip-Check',
-        url: 'https://navgit.wwzh.xyz/pages/ip-check-query/ip-check-query.html',
-      },
-      {
-        title: 'Qr-Generate',
-        url: 'https://navgit.wwzh.xyz/pages/qr-styling/index.html',
-      },
-      {
-        title: 'Dup-Remove',
-        url: 'https://navgit.wwzh.xyz/pages/duplicate-str-remove/duplicate-remove.html',
-      },
-      {
-        title: 'Random-Num',
-        url: 'https://navgit.wwzh.xyz/pages/random/random-gen.html',
-      },
-      {
-        title: 'Hex-Dec-Convert',
-        url: 'https://navgit.wwzh.xyz/pages/num-bin-convert/index.html',
-      },
-      {
-        title: 'Rmb-Chinese-Convert',
-        url: 'https://navgit.wwzh.xyz/pages/rmb_convert/RMB_2_Chinese_Up.html',
-      },
-      {
         title: 'vercel-deployments',
         url: 'https://vercel.com/zchdocs-projects/next-shadcn-dashboard-starter-dev/deployments',
       },
       { title: 'att', url: 'https://att.wwzh.xyz/' },
-      {
-        title: 'chrome-bookmark-realtime',
-        url: 'https://navgit.wwzh.xyz/pages/chrome-bookmarks-simple-v2/index.html',
-      },
-      {
-        title: 'zpbstp-bookmarks-simple',
-        url: 'https://navgit.wwzh.xyz/pages/my-bookmarks-simple/index.html?key=mine',
-      },
-      {
-        title: 'z.tool-v1',
-        url: 'https://tool.wwzh.xyz/dashboard/bookmark/chrome-bookmark',
-      },
       {
         title: 'pin-tree-dev',
         url: 'https://ptd.wwzh.xyz/',
@@ -174,7 +130,6 @@ export const bookmarkDataZch: BookmarkData = {
         title: 'pin-tree-dev-old',
         url: 'https://pintree-dev-z-git-dev24-0720-customjson-zchdocs-projects.vercel.app/',
       },
-      { title: 'chrome://bookmarks', url: 'chrome://bookmarks' },
     ],
   },
   net: {
@@ -258,6 +213,51 @@ export const bookmarkDataZch: BookmarkData = {
     links: [
       { title: 'OLlaMa', url: 'https://ollama.ai/' },
       { title: 'LMStudio', url: 'https://lmstudio.ai/' },
+    ],
+  },
+  toolsHtml: {
+    title: 'Tools Html',
+    links: [
+      {
+        title: 'Pulse-Water-Billing-Calc',
+        url: 'https://navgit.wwzh.xyz/pages/pulse-water-billing-calc/pulse-water-billing-calc.html',
+      },
+      {
+        title: 'Localize',
+        url: 'https://navgit.wwzh.xyz/pages/chrome-bookmarks-simple/index.html?name=bscus',
+      },
+      {
+        title: 'Ip-Check',
+        url: 'https://navgit.wwzh.xyz/pages/ip-check-query/ip-check-query.html',
+      },
+      {
+        title: 'Qr-Generate',
+        url: 'https://navgit.wwzh.xyz/pages/qr-styling/index.html',
+      },
+      {
+        title: 'Dup-Remove',
+        url: 'https://navgit.wwzh.xyz/pages/duplicate-str-remove/duplicate-remove.html',
+      },
+      {
+        title: 'Random-Num',
+        url: 'https://navgit.wwzh.xyz/pages/random/random-gen.html',
+      },
+      {
+        title: 'Hex-Dec-Convert',
+        url: 'https://navgit.wwzh.xyz/pages/num-bin-convert/index.html',
+      },
+      {
+        title: 'Rmb-Chinese-Convert',
+        url: 'https://navgit.wwzh.xyz/pages/rmb_convert/RMB_2_Chinese_Up.html',
+      },
+      {
+        title: 'chrome-bookmark-realtime',
+        url: 'https://navgit.wwzh.xyz/pages/chrome-bookmarks-simple-v2/index.html',
+      },
+      {
+        title: 'zpbstp-bookmarks-simple',
+        url: 'https://navgit.wwzh.xyz/pages/my-bookmarks-simple/index.html?key=mine',
+      },
     ],
   },
 };
