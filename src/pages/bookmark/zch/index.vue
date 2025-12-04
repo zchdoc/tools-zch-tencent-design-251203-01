@@ -159,7 +159,7 @@
 
     <!-- 空状态 -->
     <div v-else class="bookmark-zch__empty">
-      <t-result theme="default" title="暂无选中分组" description="请在设置面板中选择要显示的书签分组" />
+      <t-empty theme="default" title="暂无选中分组" description="请在设置面板中选择要显示的书签分组" />
     </div>
 
     <!-- 已选分组弹窗 -->
