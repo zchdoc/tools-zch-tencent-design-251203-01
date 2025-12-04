@@ -24,7 +24,7 @@ export default [
         component: () => import('@/pages/bookmark/zch/index.vue'),
         meta: {
           title: {
-            zh_CN: '常用',
+            zh_CN: '常用书签',
             en_US: 'Zch',
           },
         },
