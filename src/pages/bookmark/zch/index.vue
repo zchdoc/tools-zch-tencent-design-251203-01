@@ -503,6 +503,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  margin-top: 14px;
 
   &__row {
     display: flex;

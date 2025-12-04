@@ -78,7 +78,6 @@ export const bookmarkDataZch: BookmarkData = {
   aiEn: {
     title: 'AI EN',
     links: [
-      { title: 'xGrok', url: 'https://x.com/i/grok' },
       { title: 'Grok', url: 'https://grok.com/c' },
       { title: 'GrokApi', url: 'https://console.x.ai/' },
       { title: 'OpenAI', url: 'https://chat.openai.com/' },
