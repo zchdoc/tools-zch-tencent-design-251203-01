@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "preserve",
     "jsxImportSource": "vue",
@@ -24,11 +24,16 @@
     "alwaysStrict": true
   },
   "include": [
-    "**/*.ts",
+    "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
+    "*.ts",
     "node_modules/tdesign-vue-next/global.d.ts"
+  ],
+  "exclude": [
+    "node_modules/@vitejs/**",
+    "node_modules/@vue/babel-*/**"
   ],
   "compileOnSave": false
 }

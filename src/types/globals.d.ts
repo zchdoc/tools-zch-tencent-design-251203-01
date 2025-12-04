@@ -15,4 +15,21 @@ declare module '*.svg' {
   export default CONTENT;
 }
 
+declare module '*.svg?component' {
+  import type { DefineComponent } from 'vue';
+
+  const component: DefineComponent<object, object, any>;
+  export default component;
+}
+
+declare module '*.svg?url' {
+  const src: string;
+  export default src;
+}
+
+declare module '*.svg?raw' {
+  const content: string;
+  export default content;
+}
+
 declare type Recordable<T = any> = Record<string, T>;
