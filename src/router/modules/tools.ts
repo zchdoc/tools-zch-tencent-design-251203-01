@@ -29,6 +29,17 @@ export default [
           },
         },
       },
+      {
+        path: 'data-formatter',
+        name: 'DataFormatter',
+        component: () => import('@/pages/tools/data-formatter/index.vue'),
+        meta: {
+          title: {
+            zh_CN: '数据格式化',
+            en_US: 'Data Formatter',
+          },
+        },
+      },
     ],
   },
 ];
