@@ -97,7 +97,7 @@ import Search from './Search.vue';
 const { theme, layout, showLogo, menu, isFixed, isCompact } = defineProps({
   theme: {
     type: String,
-    default: 'light',
+    default: 'auto',
   },
   layout: {
     type: String,

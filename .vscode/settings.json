@@ -111,7 +111,7 @@
   "editor.fontFamily": "Monaco, JetBrains Mono, Microsoft YaHei UI, Consolas, 'Courier New', monospace",
   "editor.fontSize": 16,
   "npm.packageManager": "npm",
-  "workbench.iconTheme": "vs-minimal",
+  "workbench.iconTheme": "vscode-icons",
   "workbench.colorTheme": "Default Dark Modern",
   "liveServer.settings.port": 5501,
   "svg.preview.background": "transparent",
