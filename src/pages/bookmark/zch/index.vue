@@ -473,6 +473,7 @@ onMounted(() => {
 
   &__group-content {
     // 书签卡片区域
+    border-radius: 5px;
   }
 
   &__empty {
