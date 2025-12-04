@@ -2,7 +2,7 @@
   <div class="bookmark-zch">
     <!-- 可折叠设置面板 - 整合所有控制 -->
     <div class="bookmark-zch__toolbar">
-      <t-collapse v-model="settingsPanelExpanded" class="bookmark-zch__settings-collapse">
+      <t-collapse v-model="settingsPanelExpanded" :borderless="true" class="bookmark-zch__settings-collapse">
         <t-collapse-panel value="settings">
           <template #header>
             <div class="settings-collapse-header">
@@ -404,6 +404,7 @@ onMounted(() => {
 
     :deep(.t-collapse-panel__header) {
       padding: 10px 16px;
+      //border-bottom: none;
     }
 
     :deep(.t-collapse-panel__content) {
