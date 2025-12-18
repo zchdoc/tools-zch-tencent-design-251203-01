@@ -226,7 +226,7 @@ const showSelectedDialog = ref(false);
 const settingsPanelExpanded = ref<string[]>([]);
 
 // 全局每行卡片数
-const globalCardsPerRow = ref(4);
+const globalCardsPerRow = ref(6);
 
 // 每个分组的每行卡片数
 const groupCardsPerRow = reactive<Record<string, number>>({});
@@ -236,7 +236,7 @@ const displayOptions = reactive({
   showIcon: true,
   showTitle: true,
   showDescription: true,
-  showHoverEffect: true,
+  showHoverEffect: false,
   showContent: true,
   showGroupTag: true,
 });
@@ -334,10 +334,10 @@ const resetDisplaySettings = () => {
   displayOptions.showIcon = true;
   displayOptions.showTitle = true;
   displayOptions.showDescription = true;
-  displayOptions.showHoverEffect = true;
+  displayOptions.showHoverEffect = false;
   displayOptions.showContent = true;
   displayOptions.showGroupTag = true;
-  globalCardsPerRow.value = 4;
+  globalCardsPerRow.value = 6;
   Object.keys(groupCardsPerRow).forEach((key) => {
     delete groupCardsPerRow[key];
   });
