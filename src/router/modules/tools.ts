@@ -62,6 +62,17 @@ export default [
           },
         },
       },
+      {
+        path: 'pulse-calculator',
+        name: 'PulseCalculator',
+        component: () => import('@/pages/tools/pulse-calculator/index.vue'),
+        meta: {
+          title: {
+            zh_CN: '水控费率计算器',
+            en_US: 'Water Pulse Rate Calculator',
+          },
+        },
+      },
     ],
   },
 ];

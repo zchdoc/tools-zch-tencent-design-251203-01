@@ -13,6 +13,7 @@ import listFilter from './list-filter';
 import listTree from './list-tree';
 import login from './login';
 import numberConverter from './number-converter';
+import pulseCalculator from './pulse-calculator';
 import result from './result';
 import rmbConverter from './rmb-converter';
 import user from './user';
@@ -32,6 +33,7 @@ export default {
   formBase,
   formStep,
   numberConverter,
+  pulseCalculator,
   rmbConverter,
   user,
   login,
