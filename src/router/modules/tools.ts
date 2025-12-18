@@ -51,6 +51,17 @@ export default [
           },
         },
       },
+      {
+        path: 'rmb-converter',
+        name: 'RmbConverter',
+        component: () => import('@/pages/tools/rmb-converter/index.vue'),
+        meta: {
+          title: {
+            zh_CN: '人民币大小写转换',
+            en_US: 'RMB Case Converter',
+          },
+        },
+      },
     ],
   },
 ];

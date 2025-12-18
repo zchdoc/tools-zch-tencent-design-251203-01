@@ -14,6 +14,7 @@ import listTree from './list-tree';
 import login from './login';
 import numberConverter from './number-converter';
 import result from './result';
+import rmbConverter from './rmb-converter';
 import user from './user';
 
 export default {
@@ -31,6 +32,7 @@ export default {
   formBase,
   formStep,
   numberConverter,
+  rmbConverter,
   user,
   login,
   result,
