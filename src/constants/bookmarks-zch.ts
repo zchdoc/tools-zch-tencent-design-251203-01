@@ -93,6 +93,7 @@ export const bookmarkDataZch: BookmarkData = {
       },
       { title: 'CoZeEn', url: 'https://www.coze.com' },
       { title: 'CiCi', url: 'https://www.ciciai.com/' },
+      { title: 'Copilot', url: 'https://github.com/copilot' },
     ],
   },
   aiCn: {
@@ -176,14 +177,6 @@ export const bookmarkDataZch: BookmarkData = {
         url: 'https://dictionary.cambridge.org/zhs/',
       },
       { title: 'DeepL', url: 'https://www.deepl.com/zh/translator' },
-    ],
-  },
-  aiWithShell: {
-    title: 'AI Shelled',
-    links: [
-      { title: 'Copilot', url: 'https://github.com/copilot' },
-      { title: 'JuChat', url: 'https://www.juchats.com/chat' },
-      { title: 'OAiFree', url: 'https://shared.oaifree.com/' },
     ],
   },
   aiRanking: {
