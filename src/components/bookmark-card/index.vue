@@ -75,7 +75,7 @@ const props = defineProps({
       showIcon: true,
       showTitle: true,
       showDescription: true,
-      showHoverEffect: true,
+      showHoverEffect: false,
     }),
   },
 });
