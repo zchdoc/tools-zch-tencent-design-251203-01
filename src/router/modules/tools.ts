@@ -40,6 +40,17 @@ export default [
           },
         },
       },
+      {
+        path: 'number-converter',
+        name: 'NumberConverter',
+        component: () => import('@/pages/tools/number-converter/index.vue'),
+        meta: {
+          title: {
+            zh_CN: '进制转换',
+            en_US: 'Number Converter',
+          },
+        },
+      },
     ],
   },
 ];

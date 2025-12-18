@@ -12,6 +12,7 @@ import listCard from './list-card';
 import listFilter from './list-filter';
 import listTree from './list-tree';
 import login from './login';
+import numberConverter from './number-converter';
 import result from './result';
 import user from './user';
 
@@ -29,6 +30,7 @@ export default {
   detailSecondary,
   formBase,
   formStep,
+  numberConverter,
   user,
   login,
   result,
