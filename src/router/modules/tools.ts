@@ -84,6 +84,17 @@ export default [
           },
         },
       },
+      {
+        path: 'random-generator',
+        name: 'RandomGenerator',
+        component: () => import('@/pages/tools/random-generator/index.vue'),
+        meta: {
+          title: {
+            zh_CN: '随机数生成',
+            en_US: 'Random Generator',
+          },
+        },
+      },
     ],
   },
 ];

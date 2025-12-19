@@ -15,6 +15,7 @@ import listTree from './list-tree';
 import login from './login';
 import numberConverter from './number-converter';
 import pulseCalculator from './pulse-calculator';
+import randomGenerator from './random-generator';
 import result from './result';
 import rmbConverter from './rmb-converter';
 import user from './user';
@@ -36,6 +37,7 @@ export default {
   formStep,
   numberConverter,
   pulseCalculator,
+  randomGenerator,
   rmbConverter,
   user,
   login,
