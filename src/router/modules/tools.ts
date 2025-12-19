@@ -73,6 +73,17 @@ export default [
           },
         },
       },
+      {
+        path: 'ip-checker',
+        name: 'IpChecker',
+        component: () => import('@/pages/tools/ip-checker/index.vue'),
+        meta: {
+          title: {
+            zh_CN: 'IP 地址检测',
+            en_US: 'IP Address Checker',
+          },
+        },
+      },
     ],
   },
 ];
