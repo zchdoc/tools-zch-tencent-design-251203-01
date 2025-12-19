@@ -60,16 +60,8 @@ export const bookmarkDataZch: BookmarkData = {
         url: 'https://navgit.wwzh.xyz/pages/xb-tools/xb-encrypt-js.html',
       },
       {
-        title: 'Ip-Check',
-        url: 'https://navgit.wwzh.xyz/pages/ip-check-query/ip-check-query.html',
-      },
-      {
         title: 'Qr-Generate',
         url: 'https://navgit.wwzh.xyz/pages/qr-styling/index.html',
-      },
-      {
-        title: 'Random-Num',
-        url: 'https://navgit.wwzh.xyz/pages/random/random-gen.html',
       },
       {
         title: 'chrome-bookmark-realtime',
