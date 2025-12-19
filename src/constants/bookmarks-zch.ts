@@ -75,6 +75,10 @@ export const bookmarkDataZch: BookmarkData = {
         title: 'chrome-bookmark-realtime',
         url: 'https://navgit.wwzh.xyz/pages/chrome-bookmarks-simple-v2/index.html',
       },
+      {
+        title: 'server-port-monitor',
+        url: 'http://atxc.4000063966.com:7001/status.html',
+      },
     ],
   },
   socialMedia: {
@@ -168,10 +172,6 @@ export const bookmarkDataZch: BookmarkData = {
     title: 'Translation',
     links: [
       { title: 'Google', url: 'https://translate.google.com/' },
-      {
-        title: 'GoogleHK',
-        url: 'https://translate.google.com.hk/?hl=zh-CN&sl=auto&tl=en&op=translate',
-      },
       { title: 'Bing', url: 'https://cn.bing.com/translator' },
       { title: 'Baidu', url: 'https://fanyi.baidu.com/' },
       { title: 'Youdao', url: 'https://fanyi.youdao.com/#/TextTranslate' },
