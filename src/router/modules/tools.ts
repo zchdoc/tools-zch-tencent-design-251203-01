@@ -57,7 +57,7 @@ export default [
         component: () => import('@/pages/tools/rmb-converter/index.vue'),
         meta: {
           title: {
-            zh_CN: '人民币大小写转换',
+            zh_CN: '人民币大写',
             en_US: 'RMB Case Converter',
           },
         },
@@ -68,7 +68,7 @@ export default [
         component: () => import('@/pages/tools/pulse-calculator/index.vue'),
         meta: {
           title: {
-            zh_CN: '水控费率计算器',
+            zh_CN: '水控费率计算',
             en_US: 'Water Pulse Rate Calculator',
           },
         },
@@ -79,8 +79,8 @@ export default [
         component: () => import('@/pages/tools/ip-checker/index.vue'),
         meta: {
           title: {
-            zh_CN: 'IP 地址检测',
-            en_US: 'IP Address Checker',
+            zh_CN: 'IP检测',
+            en_US: 'IPCheck',
           },
         },
       },
