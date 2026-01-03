@@ -1,20 +1,420 @@
-# Basic dependabot.yml file with
-# minimum configuration for two package managers
+# ============================================================================
+# GitHub Dependabot 配置文件
+# 文件位置：.github/dependabot.yml
+# 官方文档：https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+# ============================================================================
 
+# ----------------------------------------------------------------------------
+# version（必填）
+# 配置文件版本，目前必须设置为 2
+# ----------------------------------------------------------------------------
 version: 2
-updates:
-  # Enable version updates for npm
-  - package-ecosystem: "npm"
-    # Look for `package.json` and `lock` files in the `root` directory
-    directory: "/"
-    # Check the npm registry for updates every day (weekdays)
-    schedule:
-      interval: "monthly"
 
-  # Enable version updates for Docker
-  - package-ecosystem: "docker"
-    # Look for a `Dockerfile` in the `root` directory
-    directory: "/"
-    # Check for updates once a week
+# ----------------------------------------------------------------------------
+# registries（可选）
+# 配置私有包注册中心的访问凭据
+# 如果您的项目使用私有 npm 包、私有 Docker 镜像等，需要在这里配置
+# 支持的类型：npm-registry, docker-registry, maven-repository,
+#            nuget-feed, python-index, rubygems-server 等
+# ----------------------------------------------------------------------------
+# registries:
+# 示例：配置私有 npm 注册中心（如果您不需要可以删除这个部分）
+# npm-private:
+#   type: npm-registry
+#   url: https://npm.your-company.com
+#   # 使用 GitHub Secrets 存储敏感信息，格式为 ${{secrets.SECRET_NAME}}
+#   token: ${{secrets.NPM_PRIVATE_TOKEN}}
+
+# 示例：配置私有 Docker 注册中心
+# docker-private:
+#   type: docker-registry
+#   url: https://docker.your-company.com
+#   username: ${{secrets.DOCKER_USERNAME}}
+#   password: ${{secrets.DOCKER_PASSWORD}}
+
+# ----------------------------------------------------------------------------
+# updates（必填）
+# 定义 Dependabot 如何更新您的依赖项
+# 每个条目代表一个包生态系统的更新配置
+# ----------------------------------------------------------------------------
+updates:
+  # ==========================================================================
+  # NPM/PNPM 依赖更新配置（适用于您的 Next.js 项目）
+  # ==========================================================================
+  - package-ecosystem: 'npm'
+    # ------------------------------------------------------------------------
+    # directory（必填）
+    # 包清单文件（package.json）所在的目录
+    # "/" 表示仓库根目录
+    # 如果是 monorepo，可以指定子目录如 "/packages/frontend"
+    # ------------------------------------------------------------------------
+    directory: '/'
+
+    # ------------------------------------------------------------------------
+    # directories（可选，与 directory 二选一）
+    # 2024年新增：支持多目录和通配符
+    # 示例：
+    # directories:
+    #   - "/frontend"
+    #   - "/backend"
+    #   - "/packages/*"      # 通配符匹配
+    #   - "/**/package.json" # 递归匹配所有 package.json
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
+    # schedule（必填）
+    # 定义检查更新的频率
+    # ------------------------------------------------------------------------
     schedule:
-      interval: "monthly"
+      # interval（必填）
+      # 检查频率：daily（每天）、weekly（每周）、monthly（每月）
+      interval: 'weekly'
+
+      # day（可选）
+      # 当 interval 为 weekly 时，指定星期几运行
+      # 可选值：monday, tuesday, wednesday, thursday, friday, saturday, sunday
+      day: 'monday'
+
+      # time（可选）
+      # 指定运行时间，24小时制，格式 "HH:MM"
+      # 建议设置在工作时间，方便及时处理 PR
+      time: '09:00'
+
+      # timezone（可选）
+      # 时区设置，使用 IANA 时区标识符
+      # 中国时区：Asia/Shanghai
+      timezone: 'Asia/Shanghai'
+
+    # ------------------------------------------------------------------------
+    # open-pull-requests-limit（可选）
+    # 同时保持打开状态的 PR 数量上限
+    # 默认值：5
+    # 设置为 0 可以禁用版本更新（但仍会收到安全警报）
+    # ------------------------------------------------------------------------
+    open-pull-requests-limit: 1
+
+    # ------------------------------------------------------------------------
+    # versioning-strategy（可选）
+    # 版本更新策略，决定如何更新 package.json 中的版本号
+    #
+    # 可选值：
+    # - auto：自动选择最佳策略（默认）
+    # - increase：增加版本号以匹配新版本
+    # - increase-if-necessary：仅在需要时增加版本号
+    # - lockfile-only：仅更新 lockfile，不修改 package.json
+    # - widen：扩展版本范围以包含新版本
+    # ------------------------------------------------------------------------
+    versioning-strategy: 'increase'
+
+    # ------------------------------------------------------------------------
+    # target-branch（可选）
+    # Dependabot PR 的目标分支
+    # 默认为仓库的默认分支（通常是 main 或 master）
+    # 如果您希望 PR 先合并到开发分支，可以设置为 "develop"
+    # ------------------------------------------------------------------------
+    # target-branch: "main"
+
+    # ------------------------------------------------------------------------
+    # vendor（可选）
+    # 是否更新 vendor 目录中的依赖
+    # 默认：false
+    # ------------------------------------------------------------------------
+    # vendor: false
+
+    # ------------------------------------------------------------------------
+    # insecure-external-code-execution（可选）
+    # 是否允许执行外部代码（如 postinstall 脚本）
+    # 可选值：allow, deny
+    # 出于安全考虑，建议保持默认（deny）
+    # ------------------------------------------------------------------------
+    # insecure-external-code-execution: "deny"
+
+    # ------------------------------------------------------------------------
+    # labels（可选）
+    # 为 Dependabot 创建的 PR 添加标签
+    # 方便在 PR 列表中筛选和识别
+    # ------------------------------------------------------------------------
+    labels:
+      - 'dependencies' # 标记为依赖更新
+      - 'automated' # 标记为自动化 PR
+      - 'npm' # 标记包管理器类型
+
+    # ------------------------------------------------------------------------
+    # milestone（可选）
+    # 将 PR 关联到指定的里程碑（使用里程碑编号）
+    # ------------------------------------------------------------------------
+    # milestone: 1
+
+    # ------------------------------------------------------------------------
+    # assignees（可选）
+    # 自动分��� PR 给指定的用户
+    # 最多可以指定 10 个用户
+    # ------------------------------------------------------------------------
+    assignees:
+      - 'zchdoc'
+
+    # ------------------------------------------------------------------------
+    # reviewers（可选）
+    # 自动请求指定用户进行代码审查
+    # 最多可以指定 10 个用户或团队
+    # ------------------------------------------------------------------------
+    # reviewers:
+    #   - 'zchdoc'
+
+    # ------------------------------------------------------------------------
+    # commit-message（可选）
+    # 自定义 Dependabot 的提交信息格式
+    # ------------------------------------------------------------------------
+    commit-message:
+      # prefix（可选）
+      # 提交信息前缀，会添加到所有提交信息前
+      # 常见格式：chore, deps, build, fix 等
+      prefix: 'chore(deps)'
+
+      # prefix-development（可选）
+      # 仅用于开发依赖（devDependencies）的前缀
+      prefix-development: 'chore(deps-dev)'
+
+      # include（可选）
+      # 在提交信息中包含额外信息
+      # 可选值：scope（包含依赖范围信息）
+      include: 'scope'
+
+    # ------------------------------------------------------------------------
+    # ignore（可选）
+    # 忽略特定依赖或版本的更新
+    # 当某些依赖需要保持特定版本时使用
+    # ------------------------------------------------------------------------
+    # ignore:
+    # 示例：忽略 eslint 的所有主版本更新（只接受补丁和次版本更新）
+    # - dependency-name: "eslint"
+    #   update-types:
+    #     - "version-update:semver-major"
+
+    # 示例：完全忽略某个依赖的更新
+    # - dependency-name: "lodash"
+
+    # 示例：忽略特定版本范围
+    # - dependency-name: "react"
+    #   versions:
+    #     - ">= 20.0.0"  # 忽略 React 20 及以上版本
+
+    # 示例：使用通配符忽略一组依赖
+    # - dependency-name: "@types/*"
+    #   update-types:
+    #     - "version-update:semver-major"
+
+    # ------------------------------------------------------------------------
+    # allow（可选）
+    # 仅允许更新特定的依赖
+    # 与 ignore 相反，这是白名单模式
+    # 注意：设置 allow 后，只有匹配的依赖会被更新
+    # ------------------------------------------------------------------------
+    # allow:
+    #   # 示例：只更新生产依赖
+    #   - dependency-type: "production"
+    #
+    #   # 示例：只更新特定依赖
+    #   - dependency-name: "react"
+    #   - dependency-name: "next"
+    #
+    #   # 示例：只更新特定范围的依赖
+    #   - dependency-name: "@radix-ui/*"
+
+    # ------------------------------------------------------------------------
+    # groups（可选）
+    # 将多个依赖的更新合并到一个 PR 中
+    # 减少 PR 数量，方便统一审查和测试
+    # ------------------------------------------------------------------------
+    groups:
+      # 安全更新组 - 所有安全更新合并到一个 PR
+      security-updates:
+        applies-to: security-updates # 仅应用于安全更新
+        patterns:
+          - '*' # 匹配所有依赖
+
+      # React 生态系统组 - React 相关依赖一起更新
+      react-ecosystem:
+        applies-to: version-updates # 应用于版本更新
+        patterns:
+          - 'react'
+          - 'react-dom'
+          - 'react-*' # 所有 react- 开头的包
+          - '@types/react'
+          - '@types/react-dom'
+        # update-types（可选）
+        # 限制此组包含的更新类型
+        # 可选值：minor, patch, major
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # Next.js 相关组
+      nextjs:
+        patterns:
+          - 'next'
+          - 'next-*'
+          - 'eslint-config-next'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # Radix UI 组件库组
+      radix-ui:
+        patterns:
+          - '@radix-ui/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # 开发工具组 - 开发依赖统一更新
+      dev-tools:
+        patterns:
+          - '@types/*'
+          - 'typescript'
+          - 'eslint'
+          - 'eslint-*'
+          - 'prettier'
+          - 'prettier-*'
+          - 'husky'
+          - 'lint-staged'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # TailwindCSS 相关组
+      tailwindcss:
+        patterns:
+          - 'tailwindcss'
+          - 'tailwindcss-*'
+          - 'tailwind-*'
+          - '@tailwindcss/*'
+          - 'postcss'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # 表单和验证相关组
+      forms-validation:
+        patterns:
+          - 'react-hook-form'
+          - '@hookform/*'
+          - 'zod'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # 其他次要更新组 - 其他所有依赖的 minor 和 patch 更新
+      minor-and-patch:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
+        # exclude-patterns（可选）
+        # 从此组中排除的依赖
+        exclude-patterns:
+          - 'react'
+          - 'react-dom'
+          - 'next'
+          - '@radix-ui/*'
+          - 'tailwindcss*'
+
+  # ==========================================================================
+  # GitHub Actions 更新配置
+  # 自动更新 .github/workflows/ 目录下的 GitHub Actions 版本
+  # ==========================================================================
+  - package-ecosystem: 'github-actions'
+    # GitHub Actions 的工作流文件固定在 /.github/workflows 目录
+    directory: '/'
+
+    schedule:
+      interval: 'weekly'
+      day: 'saturday'
+      time: '09:00'
+      timezone: 'Asia/Shanghai'
+
+    # GitHub Actions 更新通常较少，可以设置较小的限制
+    open-pull-requests-limit: 1
+
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+      - 'automated'
+
+    assignees:
+      - 'zchdoc'
+
+    # reviewers:
+    #   - 'zchdoc'
+
+    commit-message:
+      prefix: 'ci(deps)'
+
+    # 将所有 GitHub Actions 更新合并到一个 PR
+    groups:
+      github-actions:
+        patterns:
+          - '*'
+
+  # ==========================================================================
+  # Docker 更新配置（如果您的项目使用 Docker）
+  # 自动更新 Dockerfile 中的基础镜像版本
+  # ==========================================================================
+  # - package-ecosystem: "docker"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
+  #     day: "tuesday"
+  #     time: "09:00"
+  #     timezone: "Asia/Shanghai"
+  #   open-pull-requests-limit: 5
+  #   labels:
+  #     - "dependencies"
+  #     - "docker"
+  #     - "automated"
+  #   assignees:
+  #     - "zchdoc"
+  #   commit-message:
+  #     prefix: "build(docker)"
+# ============================================================================
+# 配置说明和最佳实践
+# ============================================================================
+#
+# 1. 安全更新 vs 版本更新
+#    - 安全更新（Security Updates）：修复已知漏洞，需要在仓库设置中单独启用
+#    - 版本更新（Version Updates）：保持依赖最新，由此配置文件控制
+#
+# 2. 分组策略建议
+#    - 将相关依赖分组可以减少 PR 数量
+#    - 安全更新建议单独分组，优先处理
+#    - 主要框架（React、Next.js）建议单独分组，便于测试
+#
+# 3. 版本更新类型说明
+#    - major：主版本更新（如 1.x.x -> 2.x.x），可能有破坏性变更
+#    - minor：次版本更新（如 1.1.x -> 1.2.x），新功能但向后兼容
+#    - patch：补丁更新（如 1.1.1 -> 1.1.2），bug 修复
+#
+# 4. 时区设置
+#    - Asia/Shanghai：北京时间（UTC+8）
+#    - Asia/Tokyo：东京时间（UTC+9）
+#    - America/New_York：美国东部时间
+#    - Europe/London：伦敦时间
+#
+# 5. 常用 package-ecosystem 值
+#    - npm：Node.js/JavaScript 项目
+#    - pip：Python 项目
+#    - maven/gradle：Java 项目
+#    - composer：PHP 项目
+#    - bundler：Ruby 项目
+#    - cargo：Rust 项目
+#    - docker：Docker 镜像
+#    - github-actions：GitHub Actions
+#    - terraform：Terraform 配置
+#    - nuget：.NET 项目
+#
+# 6. 更多信息
+#    - 官方文档：https://docs.github.com/en/code-security/dependabot
+#    - 配置参考：https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+#
+# ==========================================================================
