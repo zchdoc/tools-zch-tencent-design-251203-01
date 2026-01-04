@@ -18,7 +18,8 @@ export function useLocale() {
   }
 
   const getComponentsLocale = computed(() => {
-    return i18n.global.getLocaleMessage(locale.value).componentsLocale as GlobalConfigProvider;
+    return (i18n.global.getLocaleMessage(locale.value) as Record<string, unknown>)
+      .componentsLocale as GlobalConfigProvider;
   });
 
   return {

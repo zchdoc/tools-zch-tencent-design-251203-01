@@ -4,12 +4,14 @@ npm run dev
 npm install && npm run dev
 
 npm run format
+npm run type-check
 npm run pre-commit
 npm run pre-deploy
 
 npm run format && npm run pre-deploy
 
 npm run format && npm run pre-commit && npm run pre-deploy
+npm run format && npm run type-check && npm run pre-commit && npm run pre-deploy
 
 npm install && npm run format && npm run pre-commit && npm run pre-deploy
 
