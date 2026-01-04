@@ -30,3 +30,6 @@
 
     // "vue-i18n": "^9.9.1",
     "vue-i18n": "11.2.8",
+
+tools-zch-tencent-design-251203-01\commitlint.config.js git 提交前缀 备份
+['build', 'chore', 'ci', 'docs', 'feat', 'fix', 'perf', 'refactor', 'revert', 'style', 'test', 'types'],
