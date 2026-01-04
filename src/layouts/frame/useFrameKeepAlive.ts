@@ -43,11 +43,11 @@ export function useFrameKeepAlive() {
     return item.name === unref(currentRoute).name;
   }
 
-  function hasRenderFrame(name: string) {
+  function hasRenderFrame(name: string | symbol | undefined) {
     if (!unref(isUseTabsRouter)) {
       return router.currentRoute.value.name === name;
     }
-    return unref(getOpenTabList).includes(name);
+    return typeof name === 'string' && unref(getOpenTabList).includes(name);
   }
 
   return { hasRenderFrame, getFramePages, showIframe, getAllFramePages };

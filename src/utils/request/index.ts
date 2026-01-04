@@ -12,8 +12,9 @@ import { formatRequestDate, joinTimestamp, setObjToUrlParams } from './utils';
 
 const env = import.meta.env.MODE || 'development';
 
-// 如果是mock模式 或 没启用直连代理 就不配置host 会走本地Mock拦截 或 Vite 代理
-const host = env === 'mock' || import.meta.env.VITE_IS_REQUEST_PROXY !== 'true' ? '' : import.meta.env.VITE_API_URL;
+// 开发环境使用 Vite 代理，不配置 host
+// 生产环境可以通过环境变量 VITE_API_URL 配置后端地址
+const host = env === 'development' ? '' : import.meta.env.VITE_API_URL || '';
 
 // 数据处理，方便区分多种处理方式
 const transform: AxiosTransform = {
@@ -47,12 +48,13 @@ const transform: AxiosTransform = {
     const { code } = data;
 
     // 这里逻辑可以根据项目进行修改
-    const hasSuccess = data && code === 0;
+    // 后端返回 code === 0 或 code === 200 都表示成功
+    const hasSuccess = data && (code === 0 || code === 200);
     if (hasSuccess) {
       return data.data;
     }
 
-    throw new Error(`请求接口错误, 错误码: ${code}`);
+    throw new Error(data.message || `请求接口错误, 错误码: ${code}`);
   },
 
   // 请求前处理配置
@@ -132,7 +134,22 @@ const transform: AxiosTransform = {
 
   // 响应错误处理
   responseInterceptorsCatch: (error: any, instance: AxiosInstance) => {
-    const { config } = error;
+    const { config, response } = error;
+
+    // 处理 401 未授权错误 - Token 过期或无效
+    if (response?.status === 401) {
+      const userStore = useUserStore();
+      userStore.logout();
+      // 跳转到登录页
+      window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
+      return Promise.reject(new Error('登录已过期，请重新登录'));
+    }
+
+    // 处理 403 无权限错误
+    if (response?.status === 403) {
+      return Promise.reject(new Error('没有权限访问该资源'));
+    }
+
     if (!config || !config.requestOptions.retry) return Promise.reject(error);
 
     config.retryCount = config.retryCount || 0;
@@ -156,8 +173,8 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
     merge(
       <CreateAxiosOptions>{
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
-        // 例如: authenticationScheme: 'Bearer'
-        authenticationScheme: '',
+        // JWT Bearer Token 认证
+        authenticationScheme: 'Bearer',
         // 超时
         timeout: 10 * 1000,
         // 携带Cookie

@@ -46,7 +46,20 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       port: 3002,
       host: '0.0.0.0',
       proxy: {
-        [VITE_API_URL_PREFIX]: 'http://127.0.0.1:3000/',
+        // 代理后端认证中心 API
+        '/api/auth': {
+          target: 'http://localhost:8079',
+          changeOrigin: true,
+        },
+        '/api/sys': {
+          target: 'http://localhost:8079',
+          changeOrigin: true,
+        },
+        // 其他 API 保持原有代理（如果需要）
+        [VITE_API_URL_PREFIX]: {
+          target: 'http://127.0.0.1:3000/',
+          changeOrigin: true,
+        },
       },
     },
   };

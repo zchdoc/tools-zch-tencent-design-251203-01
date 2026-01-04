@@ -10,7 +10,7 @@
   >
     <template v-if="type === 'password'">
       <t-form-item name="account">
-        <t-input v-model="formData.account" size="large" :placeholder="`${t('pages.login.input.account')}：admin`">
+        <t-input v-model="formData.account" size="large" :placeholder="`${t('pages.login.input.account')}`">
           <template #prefix-icon>
             <t-icon name="user" />
           </template>
@@ -23,7 +23,7 @@
           size="large"
           :type="showPsw ? 'text' : 'password'"
           clearable
-          :placeholder="`${t('pages.login.input.password')}：admin`"
+          :placeholder="`${t('pages.login.input.password')}`"
         >
           <template #prefix-icon>
             <t-icon name="lock-on" />
@@ -35,7 +35,7 @@
       </t-form-item>
 
       <div class="check-container remember-pwd">
-        <t-checkbox>{{ t('pages.login.remember') }}</t-checkbox>
+        <t-checkbox v-model="formData.rememberMe">{{ t('pages.login.remember') }}</t-checkbox>
         <span class="tip">{{ t('pages.login.forget') }}</span>
       </div>
     </template>
@@ -68,7 +68,7 @@
     </template>
 
     <t-form-item v-if="type !== 'qrcode'" class="btn-container">
-      <t-button block size="large" type="submit"> {{ t('pages.login.signIn') }} </t-button>
+      <t-button block size="large" type="submit" :loading="loading"> {{ t('pages.login.signIn') }} </t-button>
     </t-form-item>
 
     <div class="switch-container">
@@ -95,10 +95,10 @@ const userStore = useUserStore();
 
 const INITIAL_DATA = {
   phone: '',
-  account: 'admin',
-  password: 'admin',
+  account: '',
+  password: '',
   verifyCode: '',
-  checked: false,
+  rememberMe: false,
 };
 
 const FORM_RULES: Record<string, FormRule[]> = {
@@ -109,6 +109,7 @@ const FORM_RULES: Record<string, FormRule[]> = {
 };
 
 const type = ref('password');
+const loading = ref(false);
 
 const form = ref<FormInstanceFunctions>();
 const formData = ref({ ...INITIAL_DATA });
@@ -127,25 +128,37 @@ const route = useRoute();
  * 发送验证码
  */
 const sendCode = () => {
-  form.value.validate({ fields: ['phone'] }).then((e) => {
+  form.value?.validate({ fields: ['phone'] }).then((e) => {
     if (e === true) {
       handleCounter();
     }
   });
 };
 
+/**
+ * 表单提交 - 登录
+ */
 const onSubmit = async (ctx: SubmitContext) => {
   if (ctx.validateResult === true) {
+    loading.value = true;
     try {
-      await userStore.login(formData.value);
+      // 调用后端登录 API
+      await userStore.login({
+        username: formData.value.account,
+        password: formData.value.password,
+      });
 
       MessagePlugin.success('登录成功');
+
+      // 跳转到目标页面
       const redirect = route.query.redirect as string;
-      const redirectUrl = redirect ? decodeURIComponent(redirect) : '/dashboard';
+      const redirectUrl = redirect ? decodeURIComponent(redirect) : '/dashboard/base';
       router.push(redirectUrl);
-    } catch (e) {
-      console.log(e);
-      MessagePlugin.error(e.message);
+    } catch (e: any) {
+      console.error('登录失败:', e);
+      MessagePlugin.error(e.message || '登录失败，请检查用户名和密码');
+    } finally {
+      loading.value = false;
     }
   }
 };

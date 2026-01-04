@@ -6,6 +6,7 @@ import App from './App.vue';
 import router from './router';
 import { store } from './store';
 import i18n from './locales';
+import { setupPermissionDirectives } from './directives/permission';
 
 import 'tdesign-vue-next/es/style/index.css';
 import '@/style/index.less';
@@ -17,5 +18,8 @@ app.use(TDesign);
 app.use(store);
 app.use(router);
 app.use(i18n);
+
+// 注册权限指令 (v-permission, v-role)
+setupPermissionDirectives(app);
 
 app.mount('#app');

@@ -62,7 +62,9 @@
               <template #icon>
                 <t-icon class="header-user-avatar" name="user-circle" />
               </template>
-              <div class="header-user-account">{{ user.userInfo.name }}</div>
+              <div class="header-user-account">
+                {{ user.userInfo.nickname || user.userInfo.username || user.userInfo.name }}
+              </div>
               <template #suffix><chevron-down-icon /></template>
             </t-button>
           </t-dropdown>

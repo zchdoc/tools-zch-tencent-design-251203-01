@@ -90,7 +90,9 @@ export interface RequestOptions {
 
 export interface Result<T = any> {
   code: number;
+  message?: string;
   data: T;
+  timestamp?: number;
 }
 
 export interface AxiosRequestConfigRetry extends AxiosRequestConfig {
