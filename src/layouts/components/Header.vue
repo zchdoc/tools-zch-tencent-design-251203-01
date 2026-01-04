@@ -169,10 +169,12 @@ const handleNav = (url: string) => {
   router.push(url);
 };
 
-const handleLogout = () => {
+const handleLogout = async () => {
+  // 清除用户状态和 token
+  await user.logout();
+  // 跳转到登录页
   router.push({
     path: '/login',
-    query: { redirect: encodeURIComponent(router.currentRoute.value.fullPath) },
   });
 };
 

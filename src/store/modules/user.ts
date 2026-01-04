@@ -97,6 +97,10 @@ export const useUserStore = defineStore('user', {
       this.token = '';
       this.refreshToken = '';
       this.userInfo = { ...InitUserInfo };
+
+      // 清除动态路由
+      const permissionStore = usePermissionStore();
+      permissionStore.restoreRoutes();
     },
 
     /**
