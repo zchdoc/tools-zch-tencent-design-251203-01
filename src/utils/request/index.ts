@@ -16,6 +16,102 @@ const env = import.meta.env.MODE || 'development';
 // 生产环境可以通过环境变量 VITE_API_URL 配置后端地址
 const host = env === 'development' ? '' : import.meta.env.VITE_API_URL || '';
 
+// ==================== 请求日志工具 ====================
+const LOG_ENABLED = env === 'development'; // 仅开发环境打印日志
+
+const logStyles = {
+  request: 'background: #3498db; color: white; padding: 2px 6px; border-radius: 3px;',
+  response: 'background: #2ecc71; color: white; padding: 2px 6px; border-radius: 3px;',
+  error: 'background: #e74c3c; color: white; padding: 2px 6px; border-radius: 3px;',
+  mock: 'background: #9b59b6; color: white; padding: 2px 6px; border-radius: 3px;',
+  api: 'background: #e67e22; color: white; padding: 2px 6px; border-radius: 3px;',
+};
+
+/** 判断是否是 mock 请求（根据 URL 判断） */
+const isMockRequest = (url: string) => {
+  // 后端真实接口路径
+  const realApiPaths = ['/api/auth/', '/api/sys/'];
+  return !realApiPaths.some((path) => url.includes(path));
+};
+
+/** 获取完整的请求地址（包含代理目标） */
+const getFullRequestUrl = (config: any) => {
+  const url = config.url || '';
+
+  // 判断请求会被代理到哪个后端
+  if (url.startsWith('/api/auth') || url.startsWith('/api/sys')) {
+    // 这些路径会被 vite 代理到后端认证中心
+    return `http://localhost:8079${url}`;
+  }
+
+  // 其他请求（mock 或其他代理）
+  if (config.baseURL) {
+    return `${config.baseURL}${url}`;
+  }
+
+  // 相对路径，使用当前域名
+  return `${window.location.origin}${url}`;
+};
+
+/** 打印请求日志 */
+const logRequest = (config: any) => {
+  if (!LOG_ENABLED) return;
+
+  const url = config.url || '';
+  const isMock = isMockRequest(url);
+  const sourceLabel = isMock ? '[MOCK]' : '[API]';
+  const sourceStyle = isMock ? logStyles.mock : logStyles.api;
+  const fullUrl = getFullRequestUrl(config);
+
+  console.group(`%c请求%c ${sourceLabel} %c${config.method?.toUpperCase()} ${url}`, logStyles.request, sourceStyle, '');
+  console.log('🌐 后端地址:', fullUrl);
+  console.log('📋 请求方法:', config.method?.toUpperCase());
+  console.log('📦 请求参数:', config.params || '无');
+  console.log('📝 请求数据:', config.data || '无');
+  console.log('🔑 请求头:', config.headers);
+  console.log('⏰ 时间:', new Date().toLocaleTimeString());
+  console.groupEnd();
+};
+
+/** 打印响应日志 */
+const logResponse = (response: any) => {
+  if (!LOG_ENABLED) return;
+
+  const url = response.config?.url || '';
+  const isMock = isMockRequest(url);
+  const sourceLabel = isMock ? '[MOCK]' : '[API]';
+  const sourceStyle = isMock ? logStyles.mock : logStyles.api;
+  const fullUrl = getFullRequestUrl(response.config);
+
+  console.group(
+    `%c响应%c ${sourceLabel} %c${response.config?.method?.toUpperCase()} ${url}`,
+    logStyles.response,
+    sourceStyle,
+    '',
+  );
+  console.log('🌐 后端地址:', fullUrl);
+  console.log('📥 状态码:', response.status);
+  console.log('📦 响应数据:', response.data);
+  console.log('⏱️ 耗时:', response.config?.__requestTime ? `${Date.now() - response.config.__requestTime}ms` : '未知');
+  console.groupEnd();
+};
+
+/** 打印错误日志 */
+const logError = (error: any) => {
+  if (!LOG_ENABLED) return;
+
+  const url = error.config?.url || '';
+  const fullUrl = error.config ? getFullRequestUrl(error.config) : url;
+
+  console.group(`%c错误%c ${error.config?.method?.toUpperCase()} ${url}`, logStyles.error, '');
+  console.log('🌐 后端地址:', fullUrl);
+  console.log('❌ 错误信息:', error.message);
+  console.log('📋 错误状态:', error.response?.status || '无响应');
+  console.log('📋 错误详情:', error.response?.data || error);
+  console.log('📤 请求配置:', error.config);
+  console.groupEnd();
+};
+
 // 数据处理，方便区分多种处理方式
 const transform: AxiosTransform = {
   // 处理请求数据。如果数据不是预期格式，可直接抛出错误
@@ -124,17 +220,29 @@ const transform: AxiosTransform = {
         ? `${options.authenticationScheme} ${token}`
         : token;
     }
+
+    // 记录请求开始时间
+    (config as any).__requestTime = Date.now();
+
+    // 打印请求日志
+    logRequest(config);
+
     return config;
   },
 
   // 响应拦截器处理
   responseInterceptors: (res) => {
+    // 打印响应日志
+    logResponse(res);
     return res;
   },
 
   // 响应错误处理
   responseInterceptorsCatch: (error: any, instance: AxiosInstance) => {
     const { config, response } = error;
+
+    // 打印错误日志
+    logError(error);
 
     // 处理 401 未授权错误 - Token 过期或无效
     if (response?.status === 401) {
