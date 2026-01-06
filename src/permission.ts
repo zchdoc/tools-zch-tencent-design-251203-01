@@ -56,24 +56,30 @@ router.beforeEach(async (to, from, next) => {
       // 4. 构建动态路由（如果还没有）
       const { asyncRoutes } = permissionStore;
       if (!asyncRoutes || asyncRoutes.length === 0) {
-        try {
-          const routeList = await permissionStore.buildAsyncRoutes();
-          routeList.forEach((item) => {
-            router.addRoute(item as RouteRecordRaw);
-          });
+        const routeList = await permissionStore.buildAsyncRoutes();
 
-          if (to.name === PAGE_NOT_FOUND_ROUTE.name) {
-            // 动态添加路由后，此处应当重定向到fullPath，否则会加载404页面内容
-            next({ path: to.fullPath, replace: true, query: to.query });
-            return;
-          } else {
-            const redirect = decodeURIComponent((from.query.redirect || to.path) as string);
-            next(to.path === redirect ? { ...to, replace: true } : { path: redirect, query: to.query });
-            return;
-          }
-        } catch (routeError) {
-          console.warn('构建动态路由失败，使用静态路由:', routeError);
-          // 构建路由失败，继续使用静态路由
+        // 检查后端是否可用
+        if (!permissionStore.isBackendAvailable) {
+          console.warn('[Permission] 后端服务不可用，跳转到错误页');
+          MessagePlugin.error(permissionStore.backendErrorMessage || '后端服务不可用');
+          // 跳转到服务不可用页面
+          next({ path: '/error/service-unavailable', replace: true });
+          NProgress.done();
+          return;
+        }
+
+        routeList.forEach((item) => {
+          router.addRoute(item as RouteRecordRaw);
+        });
+
+        if (to.name === PAGE_NOT_FOUND_ROUTE.name) {
+          // 动态添加路由后，此处应当重定向到fullPath，否则会加载404页面内容
+          next({ path: to.fullPath, replace: true, query: to.query });
+          return;
+        } else {
+          const redirect = decodeURIComponent((from.query.redirect || to.path) as string);
+          next(to.path === redirect ? { ...to, replace: true } : { path: redirect, query: to.query });
+          return;
         }
       }
 

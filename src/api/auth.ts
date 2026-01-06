@@ -54,7 +54,7 @@ export interface LoginResponse {
   userInfo: UserInfoResponse;
 }
 
-/** 菜单树响应 */
+/** 菜单树响应（旧版本，保留兼容） */
 export interface MenuTreeResponse {
   id: number;
   parentId: number;
@@ -66,6 +66,30 @@ export interface MenuTreeResponse {
   visible: number;
   isVip: number;
   children?: MenuTreeResponse[];
+}
+
+/** 菜单路由响应（新版本，与前端格式完全匹配） */
+export interface MenuRouteResponse {
+  path: string;
+  name: string;
+  component?: string;
+  redirect?: string;
+  meta?: {
+    title?: {
+      zh_CN: string;
+      en_US: string;
+    };
+    icon?: string;
+    hidden?: boolean;
+    single?: boolean;
+    frameSrc?: string;
+    frameBlank?: boolean;
+    keepAlive?: boolean;
+    orderNo?: number;
+    isVip?: boolean;
+    menuId?: number;
+  };
+  children?: MenuRouteResponse[];
 }
 
 /** 通用响应包装 */
@@ -89,10 +113,12 @@ const AuthApi = {
   refresh: '/auth/refresh',
   /** 获取当前用户信息 */
   me: '/auth/me',
-  /** 获取当前用户菜单 */
+  /** 获取当前用户菜单（旧版本） */
   menus: '/sys/permission/menus',
   /** 获取当前用户权限编码 */
   codes: '/sys/permission/codes',
+  /** 获取菜单列表（新版本，国际化） */
+  menuListI18n: '/sys/menu/list-i18n',
 };
 
 /**
@@ -163,5 +189,16 @@ export function getUserMenus() {
 export function getUserPermissionCodes() {
   return request.get<string[]>({
     url: AuthApi.codes,
+  });
+}
+
+/**
+ * 获取菜单列表（国际化版本）
+ * 返回格式与前端路由格式完全匹配
+ * @returns 菜单路由列表
+ */
+export function getMenuListI18n() {
+  return request.get<{ list: MenuRouteResponse[] }>({
+    url: AuthApi.menuListI18n,
   });
 }

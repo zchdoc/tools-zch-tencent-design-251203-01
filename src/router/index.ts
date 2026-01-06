@@ -22,11 +22,73 @@ const defaultRouterList: Array<RouteRecordRaw> = [
     redirect: '/dashboard/base',
   },
 ];
+
+// =====================================================
+// 公开访问的页面（无需登录即可访问）
+// 这些路由需要静态定义，因为动态路由需要登录才能获取
+// =====================================================
+import Layout from '@/layouts/index.vue';
+
+export const publicRouterList: Array<RouteRecordRaw> = [
+  {
+    path: '/bookmark',
+    component: Layout,
+    redirect: '/bookmark/zch',
+    name: 'bookmarkPublic',
+    meta: {
+      title: { zh_CN: '书签', en_US: 'Bookmark' },
+      icon: 'bookmark',
+      hidden: true, // 在菜单中隐藏，避免与动态菜单重复
+    },
+    children: [
+      {
+        path: 'zch',
+        name: 'BookmarkZchPublic',
+        component: () => import('@/pages/bookmark/zch/index.vue'),
+        meta: {
+          title: { zh_CN: '常用书签', en_US: 'Bookmarks' },
+        },
+      },
+    ],
+  },
+];
+
+// =====================================================
+// 错误页面路由（用于后端故障等情况）
+// =====================================================
+export const errorRouterList: Array<RouteRecordRaw> = [
+  {
+    path: '/error',
+    name: 'error',
+    component: Layout,
+    redirect: '/error/service-unavailable',
+    meta: {
+      title: { zh_CN: '错误', en_US: 'Error' },
+      hidden: true,
+    },
+    children: [
+      {
+        path: 'service-unavailable',
+        name: 'ServiceUnavailable',
+        component: () => import('@/pages/result/maintenance/index.vue'),
+        meta: {
+          title: { zh_CN: '服务不可用', en_US: 'Service Unavailable' },
+        },
+      },
+    ],
+  },
+];
 // 存放固定路由
 export const homepageRouterList: Array<RouteRecordRaw> = mapModuleRouterList(homepageModules);
 export const fixedRouterList: Array<RouteRecordRaw> = mapModuleRouterList(fixedModules);
 
-export const allRoutes = [...homepageRouterList, ...fixedRouterList, ...defaultRouterList];
+export const allRoutes = [
+  ...homepageRouterList,
+  ...fixedRouterList,
+  ...publicRouterList, // 公开访问的页面
+  ...errorRouterList, // 错误页面
+  ...defaultRouterList,
+];
 
 // 固定路由模块转换为路由
 export function mapModuleRouterList(modules: Record<string, unknown>): Array<RouteRecordRaw> {

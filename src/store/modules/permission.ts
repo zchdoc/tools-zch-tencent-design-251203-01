@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import type { RouteRecordRaw } from 'vue-router';
 
 import type { MenuTreeResponse } from '@/api/auth';
-import { getUserMenus } from '@/api/auth';
+import { getMenuListI18n, getUserMenus } from '@/api/auth';
 import type { RouteItem } from '@/api/model/permissionModel';
 import router, { fixedRouterList, homepageRouterList } from '@/router';
 import { store } from '@/store';
@@ -86,7 +86,7 @@ function buildMenuTree(menus: MenuTreeResponse[]): MenuTreeResponse[] {
 export const usePermissionStore = defineStore('permission', {
   state: () => ({
     /** 白名单路由路径 */
-    whiteListRouters: ['/login', '/register', '/404', '/403', '/bookmark/zch'],
+    whiteListRouters: ['/login', '/register', '/404', '/403', '/bookmark/zch', '/error'],
     /** 所有路由 */
     routers: [] as RouteRecordRaw[],
     /** 移除的路由 */
@@ -95,6 +95,10 @@ export const usePermissionStore = defineStore('permission', {
     asyncRoutes: [] as RouteRecordRaw[],
     /** 原始菜单数据 */
     menus: [] as MenuTreeResponse[],
+    /** 后端服务是否可用 */
+    isBackendAvailable: true,
+    /** 后端错误信息 */
+    backendErrorMessage: '',
   }),
   actions: {
     /**
@@ -108,9 +112,50 @@ export const usePermissionStore = defineStore('permission', {
     },
 
     /**
-     * 从后端获取菜单并构建路由
+     * 从后端获取菜单并构建路由（新版本：国际化格式）
      */
     async buildAsyncRoutes() {
+      try {
+        // 从后端获取菜单列表（国际化版本，返回格式与前端完全匹配）
+        const response = await getMenuListI18n();
+
+        console.log('[Permission] API 原始响应:', response);
+        console.log('[Permission] API 原始响应 JSON:', JSON.stringify(response, null, 2));
+
+        const menuList = response.list || [];
+
+        console.log('[Permission] 解析后的菜单列表:', menuList);
+        console.log('[Permission] 菜单数量:', menuList.length);
+
+        // 打印每个顶级菜单
+        menuList.forEach((menu: any, index: number) => {
+          console.log(`[Permission] 菜单[${index}]:`, menu.name, menu.path, menu.meta?.title?.zh_CN);
+        });
+
+        // 直接使用后端返回的数据（已经是前端格式，无需转换）
+        this.asyncRoutes = transformObjectToRoute(menuList as RouteItem[]);
+        this.isBackendAvailable = true;
+        this.backendErrorMessage = '';
+        await this.initRoutes();
+        return this.asyncRoutes;
+      } catch (error: any) {
+        console.error('[Permission] 构建路由失败:', error);
+        // 记录后端不可用状态
+        this.isBackendAvailable = false;
+        this.backendErrorMessage = error?.message || '后端服务不可用，请稍后重试';
+        // 如果后端菜单获取失败，使用空路由
+        this.asyncRoutes = [];
+        await this.initRoutes();
+        // 不抛出错误，让路由守卫可以跳转到错误页
+        return this.asyncRoutes;
+      }
+    },
+
+    /**
+     * 从后端获取菜单并构建路由（旧版本：兼容旧格式）
+     * @deprecated 使用 buildAsyncRoutes 代替
+     */
+    async buildAsyncRoutesLegacy() {
       try {
         // 从后端获取菜单列表
         const menuList = await getUserMenus();
