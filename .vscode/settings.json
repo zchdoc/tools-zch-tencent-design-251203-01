@@ -108,7 +108,7 @@
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "terminal.integrated.defaultProfile.linux": null,
   "terminal.integrated.defaultProfile.osx": null,
-  "editor.fontFamily": "Monaco, JetBrains Mono, Microsoft YaHei UI, Consolas, 'Courier New', monospace",
+  "editor.fontFamily": "PT Mono, Monaco, JetBrains Mono, Microsoft YaHei UI, Consolas, 'Courier New', monospace",
   "editor.fontSize": 16,
   "npm.packageManager": "npm",
   "workbench.iconTheme": "vscode-icons",
