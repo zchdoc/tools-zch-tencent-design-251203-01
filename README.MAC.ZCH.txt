@@ -1,3 +1,4 @@
+npm install --registry=https://registry.npmmirror.com
 npm install
 npm run dev
 
