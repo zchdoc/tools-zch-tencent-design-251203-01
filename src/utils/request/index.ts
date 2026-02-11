@@ -41,7 +41,7 @@ const getFullRequestUrl = (config: any) => {
   // 判断请求会被代理到哪个后端
   if (url.startsWith('/api/auth') || url.startsWith('/api/sys')) {
     // 这些路径会被 vite 代理到后端认证中心
-    return `http://localhost:8079${url}`;
+    return `http://127.0.0.1:8079${url}`;
   }
 
   // 其他请求（mock 或其他代理）
