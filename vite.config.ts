@@ -11,7 +11,7 @@ const CWD = process.cwd();
 
 // https://vitejs.dev/config/
 export default ({ mode }: ConfigEnv): UserConfig => {
-  const { VITE_BASE_URL, VITE_API_URL_PREFIX } = loadEnv(mode, CWD);
+  const { VITE_BASE_URL, VITE_API_URL_PREFIX, VITE_AUTH_API_TARGET, VITE_API_TARGET } = loadEnv(mode, CWD);
   return {
     base: VITE_BASE_URL,
     resolve: {
@@ -48,16 +48,16 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       proxy: {
         // 代理后端认证中心 API
         '/api/auth': {
-          target: 'http://127.0.0.1:8079',
+          target: VITE_AUTH_API_TARGET || 'http://127.0.0.1:8079',
           changeOrigin: true,
         },
         '/api/sys': {
-          target: 'http://127.0.0.1:8079',
+          target: VITE_AUTH_API_TARGET || 'http://127.0.0.1:8079',
           changeOrigin: true,
         },
         // 其他 API 保持原有代理（如果需要）
         [VITE_API_URL_PREFIX]: {
-          target: 'http://127.0.0.1:3000/',
+          target: VITE_API_TARGET || 'http://127.0.0.1:3000/',
           changeOrigin: true,
         },
       },

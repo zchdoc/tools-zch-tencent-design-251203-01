@@ -16,6 +16,9 @@ const env = import.meta.env.MODE || 'development';
 // 生产环境可以通过环境变量 VITE_API_URL 配置后端地址
 const host = env === 'development' ? '' : import.meta.env.VITE_API_URL || '';
 
+const authApiTarget = import.meta.env.VITE_AUTH_API_TARGET || 'http://127.0.0.1:8079';
+const apiTarget = import.meta.env.VITE_API_TARGET || 'http://127.0.0.1:3000';
+
 // ==================== 请求日志工具 ====================
 const LOG_ENABLED = env === 'development'; // 仅开发环境打印日志
 
@@ -41,12 +44,16 @@ const getFullRequestUrl = (config: any) => {
   // 判断请求会被代理到哪个后端
   if (url.startsWith('/api/auth') || url.startsWith('/api/sys')) {
     // 这些路径会被 vite 代理到后端认证中心
-    return `http://127.0.0.1:8079${url}`;
+    return `${authApiTarget}${url}`;
   }
 
   // 其他请求（mock 或其他代理）
   if (config.baseURL) {
     return `${config.baseURL}${url}`;
+  }
+
+  if (url.startsWith(import.meta.env.VITE_API_URL_PREFIX || '/api')) {
+    return `${apiTarget}${url}`;
   }
 
   // 相对路径，使用当前域名
