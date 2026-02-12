@@ -13,7 +13,7 @@ export default {
   phoneLogin: '使用手机号登录',
   input: {
     account: '请输入账号',
-    password: '请输入登录密码',
+    password: '请输入登录密码' + '1-6',
     phone: '请输入手机号',
     verification: '请输入验证码',
   },
