@@ -14,7 +14,9 @@ const env = import.meta.env.MODE || 'development';
 
 // 开发环境使用 Vite 代理，不配置 host
 // 生产环境可以通过环境变量 VITE_API_URL 配置后端地址
-const host = env === 'development' ? '' : import.meta.env.VITE_API_URL || '';
+const rawApiHost = import.meta.env.VITE_API_URL || '';
+const isHttpsPage = typeof window !== 'undefined' && window.location.protocol === 'https:';
+const host = env === 'development' || (isHttpsPage && rawApiHost.startsWith('http://')) ? '' : rawApiHost;
 
 const authApiTarget = import.meta.env.VITE_AUTH_API_TARGET || 'http://127.0.0.1:8079';
 const apiTarget = import.meta.env.VITE_API_TARGET || 'http://127.0.0.1:3000';

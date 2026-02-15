@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/api/auth/(.*)",
+      "destination": "http://218.29.176.224:8079/api/auth/$1"
+    },
+    {
+      "source": "/api/sys/(.*)",
+      "destination": "http://218.29.176.224:8079/api/sys/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
