@@ -30,7 +30,7 @@ rmdir /s /q dist && rmdir /s /q node_modules && npm install && npm run dev
 
 请不要执行 run,build 等命令,可以执行 install 等命令,如果一定要执行请告诉我,执行哪个命令我来一步一步执行
 本项目使用 npm
-http://localhost:3000/dashboard/bookmark/zch
+http://localhost:3000/bookmark/zch
 
 https://codeup.aliyun.com/60111eed57a5c7b95a42b671/zch/java/tools-zch-auth-center.git
 https://github.com/zchdoc/tools-zch-ant-design-260109-01.git

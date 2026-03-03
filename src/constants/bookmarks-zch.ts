@@ -99,8 +99,6 @@ export const bookmarkDataZch: BookmarkData = {
   aiEn: {
     title: 'AI EN',
     links: [
-      { title: 'Grok', url: 'https://grok.com/c' },
-      { title: 'GrokApi', url: 'https://console.x.ai/' },
       { title: 'OpenAI', url: 'https://chat.openai.com/' },
       { title: 'Claude', url: 'https://claude.ai/new' },
       { title: 'Groq', url: 'https://groq.com/' },
@@ -113,6 +111,8 @@ export const bookmarkDataZch: BookmarkData = {
         url: 'https://fireworks.ai/models/fireworks/f1-preview/playground',
       },
       { title: 'Copilot', url: 'https://github.com/copilot' },
+      { title: 'Grok', url: 'https://grok.com/c' },
+      { title: 'XGrok', url: 'https://x.com/i/grok' },
     ],
   },
   aiCn: {
@@ -121,9 +121,10 @@ export const bookmarkDataZch: BookmarkData = {
       { title: 'DeepSeek', url: 'https://chat.deepseek.com' },
       { title: 'QwenCn', url: 'https://tongyi.com' },
       { title: 'QwenEn', url: 'https://chat.qwen.ai' },
-      { title: 'ChatGlm', url: 'https://chatglm.cn/detail' },
-      { title: 'MiniMaxi', url: 'https://minimaxi.com' },
-      { title: 'MoonShot', url: 'https://kimi.moonshot.cn' },
+      { title: 'ChatGlmCn', url: 'https://chatglm.cn/detail' },
+      { title: 'ChatGlmEn', url: 'https://chat.z.ai' },
+      { title: 'MiniMaxi', url: 'https://agent.minimaxi.com/' },
+      { title: 'MoonShot', url: 'https://www.kimi.com/' },
       { title: 'YiYan', url: 'https://yiyan.baidu.com' },
       { title: 'YuanBao', url: 'https://yuanbao.tencent.com' },
       { title: 'LingYi', url: 'https://platform.lingyiwanwu.com' },
@@ -132,6 +133,7 @@ export const bookmarkDataZch: BookmarkData = {
       { title: 'CoZeEn', url: 'https://www.coze.com' },
       { title: 'CiCi', url: 'https://www.ciciai.com' },
       { title: 'DouBao', url: 'https://www.doubao.com/chat' },
+      { title: 'Personal1', url: 'https://easychat.top/' },
     ],
   },
   net: {
