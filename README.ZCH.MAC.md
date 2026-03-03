@@ -22,3 +22,7 @@ rm -r -f node_modules && npm install && npm run dev
 本项目使用 npm
 
 当前 123456 
+
+https://codeup.aliyun.com/60111eed57a5c7b95a42b671/zch/java/tools-zch-auth-center.git
+https://github.com/zchdoc/tools-zch-ant-design-260109-01.git
+https://github.com/zchdoc/tools-zch-tencent-design-251203-01.git
