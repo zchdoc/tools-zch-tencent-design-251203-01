@@ -17,7 +17,9 @@ npm install && npm run format && npm run pre-commit && npm run pre-deploy
 
 rm -r -fo package-lock.json
 
+rm -r -fo dist
 rm -r -fo node_modules
+rm -r -fo package-lock.json
 rm -r -fo node_modules && npm install
 rm -r -fo node_modules && npm install && npm run dev
 
