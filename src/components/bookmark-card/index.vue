@@ -9,15 +9,15 @@
     <template #header>
       <div class="bookmark-card__header" :class="{ 'bookmark-card__header--no-icon': !displayOptions.showIcon }">
         <div v-if="displayOptions.showIcon" class="bookmark-card__icon">
-          <t-avatar size="36px" shape="round" :style="{ background: getIconBgColor(bookmark.title) }">
+          <t-avatar size="36px" shape="round" :style="{ background: getIconBgColor(bookmarkTitle) }">
             <template #icon>
-              <component :is="getIcon(bookmark.title)" />
+              <component :is="getIcon(bookmarkTitle)" />
             </template>
           </t-avatar>
         </div>
         <div v-if="displayOptions.showTitle || displayOptions.showDescription" class="bookmark-card__info">
-          <div v-if="displayOptions.showTitle" class="bookmark-card__title" :title="bookmark.title">
-            {{ bookmark.title }}
+          <div v-if="displayOptions.showTitle" class="bookmark-card__title" :title="bookmarkTitle">
+            {{ bookmarkTitle }}
           </div>
           <div v-if="displayOptions.showDescription" class="bookmark-card__url" :title="bookmark.url">
             {{ formatUrl(bookmark.url) }}
@@ -53,8 +53,7 @@ import {
   UserCircleIcon,
 } from 'tdesign-icons-vue-next';
 import type { Component, PropType } from 'vue';
-
-import type { BookmarkLink } from '@/constants/bookmarks-zch';
+import { computed } from 'vue';
 
 // 显示选项接口
 export interface BookmarkDisplayOptions {
@@ -64,9 +63,16 @@ export interface BookmarkDisplayOptions {
   showHoverEffect: boolean;
 }
 
+// 兼容旧常量数据(title)和新API数据(name)的书签接口
+interface BookmarkItem {
+  title?: string;
+  name?: string;
+  url: string;
+}
+
 const props = defineProps({
   bookmark: {
-    type: Object as PropType<BookmarkLink>,
+    type: Object as PropType<BookmarkItem>,
     required: true,
   },
   displayOptions: {
@@ -79,6 +85,9 @@ const props = defineProps({
     }),
   },
 });
+
+// 兼容 title(旧) 和 name(新API)
+const bookmarkTitle = computed(() => props.bookmark.title || props.bookmark.name || '');
 
 // 根据标题获取对应图标
 const getIcon = (title: string): Component => {

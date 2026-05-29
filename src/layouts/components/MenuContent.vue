@@ -3,22 +3,13 @@
     <template v-for="item in list" :key="item.path">
       <template v-if="!item.children || !item.children.length || item.meta?.single">
         <t-menu-item v-if="getHref(item)" :name="item.path" :value="getPath(item)" @click="openHref(getHref(item)[0])">
-          <template #icon>
-            <component :is="menuIcon(item)" class="t-icon"></component>
-          </template>
           {{ renderMenuTitle(item.title) }}
         </t-menu-item>
         <t-menu-item v-else :name="item.path" :value="getPath(item)" :to="item.path">
-          <template #icon>
-            <component :is="menuIcon(item)" class="t-icon"></component>
-          </template>
           {{ renderMenuTitle(item.title) }}
         </t-menu-item>
       </template>
       <t-submenu v-else :name="item.path" :value="item.path" :title="renderMenuTitle(item.title)">
-        <template #icon>
-          <component :is="menuIcon(item)" class="t-icon"></component>
-        </template>
         <menu-content v-if="item.children" :nav-data="item.children" />
       </t-submenu>
     </template>
@@ -31,8 +22,6 @@ import { computed } from 'vue';
 import { useLocale } from '@/locales/useLocale';
 import { getActive } from '@/router';
 import type { MenuRoute } from '@/types/interface';
-
-type ListItemType = MenuRoute & { icon?: string };
 
 const { navData } = defineProps({
   navData: {
@@ -48,18 +37,12 @@ const list = computed(() => {
   return getMenuList(navData);
 });
 
-const menuIcon = (item: ListItemType) => {
-  if (typeof item.icon === 'string') return <t-icon name={item.icon} />;
-  const RenderIcon = item.icon;
-  return RenderIcon;
-};
-
 const renderMenuTitle = (title: string | Record<string, string>) => {
   if (typeof title === 'string') return title;
   return title[locale.value];
 };
 
-const getMenuList = (list: MenuRoute[], basePath?: string): ListItemType[] => {
+const getMenuList = (list: MenuRoute[], basePath?: string): MenuRoute[] => {
   if (!list || list.length === 0) {
     return [];
   }
@@ -74,7 +57,6 @@ const getMenuList = (list: MenuRoute[], basePath?: string): ListItemType[] => {
       return {
         path,
         title: item.meta?.title,
-        icon: item.meta?.icon,
         children: getMenuList(item.children, path),
         meta: item.meta,
         redirect: item.redirect,
@@ -91,7 +73,7 @@ const getHref = (item: MenuRoute) => {
   return null;
 };
 
-const getPath = (item: ListItemType) => {
+const getPath = (item: MenuRoute) => {
   const activeLevel = active.value.split('/').length;
   const pathLevel = item.path.split('/').length;
   if (activeLevel > pathLevel && active.value.startsWith(item.path)) {

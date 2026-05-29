@@ -112,7 +112,7 @@
             <div class="bookmark-zch__group-left">
               <h3 class="bookmark-zch__group-title">
                 <folder-open-icon class="bookmark-zch__group-icon" />
-                {{ bookmarkDataZch[groupKey].title }}
+                {{ getGroupTitle(groupKey) }}
               </h3>
               <!-- 每行数量控制器 -->
               <div class="bookmark-zch__group-counter">
@@ -167,11 +167,11 @@
       <div class="selected-groups-dialog">
         <t-checkbox-group v-model="selectedGroups">
           <div class="selected-groups-list">
-            <div v-for="[key, group] in Object.entries(bookmarkDataZch)" :key="key" class="selected-groups-item">
-              <t-checkbox :value="key">
-                {{ group.title }}
+            <div v-for="group in bookmarkGroups" :key="group.categoryId" class="selected-groups-item">
+              <t-checkbox :value="group.categoryId">
+                {{ group.categoryName }}
                 <t-tag size="small" theme="default" variant="light" style="margin-left: 8px">
-                  {{ group.links.length }}
+                  {{ group.bookmarks.length }}
                 </t-tag>
               </t-checkbox>
             </div>
@@ -206,18 +206,23 @@ import {
 import { MessagePlugin } from 'tdesign-vue-next';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 
+import type { BookmarkGroup } from '@/api/bookmark';
+import { getGroupedBookmarks } from '@/api/bookmark';
 import BookmarkCard from '@/components/bookmark-card/index.vue';
-import { bookmarkDataZch } from '@/constants/bookmarks-zch';
 
 defineOptions({
   name: 'BookmarkZch',
 });
 
+// 书签数据（从API获取）
+const bookmarkGroups = ref<BookmarkGroup[]>([]);
+const loading = ref(false);
+
 // 搜索值
 const searchValue = ref('');
 
-// 选中的分组
-const selectedGroups = ref<string[]>([]);
+// 选中的分组（存储 categoryId）
+const selectedGroups = ref<number[]>([]);
 
 // 显示已选分组弹窗
 const showSelectedDialog = ref(false);
@@ -229,7 +234,7 @@ const settingsPanelExpanded = ref<string[]>([]);
 const globalCardsPerRow = ref(6);
 
 // 每个分组的每行卡片数
-const groupCardsPerRow = reactive<Record<string, number>>({});
+const groupCardsPerRow = reactive<Record<number, number>>({});
 
 // 显示选项
 const displayOptions = reactive({
@@ -250,12 +255,12 @@ const cardDisplayOptions = computed(() => ({
 }));
 
 // 获取分组的每行卡片数
-const getGroupCardsPerRow = (groupKey: string): number => {
+const getGroupCardsPerRow = (groupKey: number): number => {
   return groupCardsPerRow[groupKey] ?? globalCardsPerRow.value;
 };
 
 // 增加分组每行卡片数
-const increaseGroupCardsPerRow = (groupKey: string) => {
+const increaseGroupCardsPerRow = (groupKey: number) => {
   const current = getGroupCardsPerRow(groupKey);
   if (current < 12) {
     groupCardsPerRow[groupKey] = current + 1;
@@ -263,7 +268,7 @@ const increaseGroupCardsPerRow = (groupKey: string) => {
 };
 
 // 减少分组每行卡片数
-const decreaseGroupCardsPerRow = (groupKey: string) => {
+const decreaseGroupCardsPerRow = (groupKey: number) => {
   const current = getGroupCardsPerRow(groupKey);
   if (current > 2) {
     groupCardsPerRow[groupKey] = current - 1;
@@ -271,23 +276,29 @@ const decreaseGroupCardsPerRow = (groupKey: string) => {
 };
 
 // 根据每行卡片数计算 col span
-const getColSpan = (groupKey: string): number => {
+const getColSpan = (groupKey: number): number => {
   const cardsPerRow = getGroupCardsPerRow(groupKey);
   return Math.floor(12 / cardsPerRow);
 };
 
+// 根据 categoryId 获取分组标题
+const getGroupTitle = (categoryId: number): string => {
+  const group = bookmarkGroups.value.find((g) => g.categoryId === categoryId);
+  return group ? group.categoryName : '';
+};
+
 // 获取过滤后的某个分组的书签
-const getFilteredGroupBookmarks = (groupKey: string) => {
-  const group = bookmarkDataZch[groupKey];
+const getFilteredGroupBookmarks = (categoryId: number) => {
+  const group = bookmarkGroups.value.find((g) => g.categoryId === categoryId);
   if (!group) return [];
 
   if (!searchValue.value) {
-    return group.links;
+    return group.bookmarks;
   }
 
   const search = searchValue.value.toLowerCase();
-  return group.links.filter(
-    (link) => link.title.toLowerCase().includes(search) || link.url.toLowerCase().includes(search),
+  return group.bookmarks.filter(
+    (link) => link.name.toLowerCase().includes(search) || link.url.toLowerCase().includes(search),
   );
 };
 
@@ -298,7 +309,7 @@ const filteredBookmarks = computed(() => {
 
 // 全选
 const selectAll = () => {
-  selectedGroups.value = Object.keys(bookmarkDataZch);
+  selectedGroups.value = bookmarkGroups.value.map((g) => g.categoryId);
 };
 
 // 清空选择
@@ -308,8 +319,8 @@ const clearSelection = () => {
 
 // 反选
 const invertSelection = () => {
-  const allKeys = Object.keys(bookmarkDataZch);
-  selectedGroups.value = allKeys.filter((key) => !selectedGroups.value.includes(key));
+  const allIds = bookmarkGroups.value.map((g) => g.categoryId);
+  selectedGroups.value = allIds.filter((id) => !selectedGroups.value.includes(id));
 };
 
 // 保存并关闭弹窗
@@ -354,22 +365,44 @@ watch(
   { deep: true },
 );
 
-// 初始化时从 localStorage 读取
-onMounted(() => {
-  // 读取选中分组
+// 获取书签数据
+const fetchBookmarks = async () => {
+  loading.value = true;
+  try {
+    const data = await getGroupedBookmarks();
+    if (Array.isArray(data)) {
+      bookmarkGroups.value = data;
+      // 初始化选中分组
+      initSelectedGroups();
+    }
+  } catch {
+    MessagePlugin.error('获取书签失败');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 初始化选中分组
+const initSelectedGroups = () => {
   const savedGroups = localStorage.getItem('bookmarkSelectedGroups');
   if (savedGroups) {
     try {
       const parsed = JSON.parse(savedGroups);
       if (Array.isArray(parsed)) {
-        selectedGroups.value = parsed.filter((key) => bookmarkDataZch[key]);
+        const validIds = bookmarkGroups.value.map((g) => g.categoryId);
+        selectedGroups.value = parsed.filter((id: number) => validIds.includes(id));
       }
     } catch {
-      selectedGroups.value = Object.keys(bookmarkDataZch);
+      selectedGroups.value = bookmarkGroups.value.map((g) => g.categoryId);
     }
   } else {
-    selectedGroups.value = Object.keys(bookmarkDataZch);
+    selectedGroups.value = bookmarkGroups.value.map((g) => g.categoryId);
   }
+};
+
+// 初始化时从 localStorage 读取
+onMounted(() => {
+  fetchBookmarks();
 
   // 读取显示设置
   const savedSettings = localStorage.getItem('bookmarkDisplaySettings');

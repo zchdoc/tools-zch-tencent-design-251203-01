@@ -49,6 +49,14 @@ export const publicRouterList: Array<RouteRecordRaw> = [
           title: { zh_CN: '常用书签', en_US: 'Bookmarks' },
         },
       },
+      {
+        path: 'manage',
+        name: 'BookmarkManage',
+        component: () => import('@/pages/bookmark/manage/index.vue'),
+        meta: {
+          title: { zh_CN: '书签管理', en_US: 'Bookmark Manage' },
+        },
+      },
     ],
   },
 ];

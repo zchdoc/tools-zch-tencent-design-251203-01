@@ -9,6 +9,10 @@
       "destination": "http://218.29.176.224:8079/api/sys/$1"
     },
     {
+      "source": "/api/bookmark/(.*)",
+      "destination": "http://218.29.176.224:8079/api/bookmark/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

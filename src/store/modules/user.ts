@@ -107,7 +107,7 @@ export const useUserStore = defineStore('user', {
      * 检查是否有指定权限
      */
     hasPermission(code: string): boolean {
-      return this.permissions.includes(code);
+      return this.isAdmin || this.permissions.includes(code);
     },
 
     /**
@@ -121,7 +121,7 @@ export const useUserStore = defineStore('user', {
      * 检查是否有任一权限
      */
     hasAnyPermission(codes: string[]): boolean {
-      return codes.some((code) => this.permissions.includes(code));
+      return this.isAdmin || codes.some((code) => this.permissions.includes(code));
     },
 
     /**
