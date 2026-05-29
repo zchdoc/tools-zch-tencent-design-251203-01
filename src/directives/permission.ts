@@ -26,13 +26,13 @@ const permissionDirective: Directive = {
     const permissions = userStore.permissions;
 
     // 判断是否有权限
-    let hasPermission = false;
+    let hasPermission = userStore.isAdmin;
     if (typeof value === 'string') {
       // 单个权限
-      hasPermission = permissions.includes(value);
+      hasPermission = hasPermission || permissions.includes(value);
     } else if (Array.isArray(value)) {
       // 多个权限，满足任一即可
-      hasPermission = value.some((p: string) => permissions.includes(p));
+      hasPermission = hasPermission || value.some((p: string) => permissions.includes(p));
     }
 
     // 没有权限则移除元素
@@ -95,7 +95,7 @@ const permissionAllDirective: Directive = {
     const permissions = userStore.permissions;
 
     // 必须满足全部权限
-    const hasAllPermissions = value.every((p: string) => permissions.includes(p));
+    const hasAllPermissions = userStore.isAdmin || value.every((p: string) => permissions.includes(p));
 
     // 没有全部权限则移除元素
     if (!hasAllPermissions) {

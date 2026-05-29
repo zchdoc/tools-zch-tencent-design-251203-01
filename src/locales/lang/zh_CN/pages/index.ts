@@ -18,6 +18,7 @@ import pulseCalculator from './pulse-calculator';
 import randomGenerator from './random-generator';
 import result from './result';
 import rmbConverter from './rmb-converter';
+import system from './system';
 import user from './user';
 
 export default {
@@ -39,6 +40,7 @@ export default {
   pulseCalculator,
   randomGenerator,
   rmbConverter,
+  system,
   user,
   login,
   result,

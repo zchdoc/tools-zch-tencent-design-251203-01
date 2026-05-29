@@ -1,139 +1,64 @@
 {
-  "files.eol": "\n",
-  "editor.tabSize": 2,
-  "eslint.format.enable": true,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue"
-  ],
-  "[vue]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[typescriptreact]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[javascriptreact]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[typescript]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "[javascript]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  },
-  "cSpell.words": [
-    "tdesign",
-    "tvision",
-    "echarts",
-    "nprogress",
-    "commitlint",
-    "stylelint",
-    "pinia",
-    "qrcode"
-  ],
-  "prettier.enable": false,
-  "editor.formatOnSave": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.organizeImports": "never"
-  },
-  "eslint.rules.customizations": [
-    {
-      "rule": "style/*",
-      "severity": "off",
-      "fixable": true
-    },
-    {
-      "rule": "format/*",
-      "severity": "off",
-      "fixable": true
-    },
-    {
-      "rule": "*-indent",
-      "severity": "off",
-      "fixable": true
-    },
-    {
-      "rule": "*-spacing",
-      "severity": "off",
-      "fixable": true
-    },
-    {
-      "rule": "*-spaces",
-      "severity": "off",
-      "fixable": true
-    },
-    {
-      "rule": "*-order",
-      "severity": "off",
-      "fixable": true
-    },
-    {
-      "rule": "*-dangle",
-      "severity": "off",
-      "fixable": true
-    },
-    {
-      "rule": "*-newline",
-      "severity": "off",
-      "fixable": true
-    },
-    {
-      "rule": "*quotes",
-      "severity": "off",
-      "fixable": true
-    },
-    {
-      "rule": "*semi",
-      "severity": "off",
-      "fixable": true
-    }
-  ],
-  "workbench.editor.untitled.labelFormat": "name",
-  "liveServer.settings.multiRootWorkspaceName": "ProblemsAndSolutions",
-  "editor.inlineSuggest.showToolbar": "onHover",
-  "terminal.explorerKind": "integrated",
-  "terminal.integrated.tabs.enabled": true,
-  "terminal.integrated.defaultLocation": "view",
-  "terminal.integrated.cursorStyle": "line",
-  "terminal.integrated.cursorBlinking": true,
-  "terminal.integrated.defaultProfile.windows": "PowerShell",
-  "terminal.integrated.defaultProfile.linux": null,
-  "terminal.integrated.defaultProfile.osx": null,
-  "editor.fontFamily": "CommitMono, PT Mono, Monaco, JetBrains Mono, Microsoft YaHei UI, Consolas, 'Courier New', monospace",
+  "editor.fontFamily": "CommitMono, PT Mono, Monaco, JetBrains Mono, Microsoft YaHei",
   "editor.fontSize": 16,
-  "npm.packageManager": "npm",
-  "workbench.iconTheme": "vscode-icons",
-  "workbench.colorTheme": "Default Dark Modern",
-  "liveServer.settings.port": 5501,
-  "svg.preview.background": "transparent",
-  "security.workspace.trust.enabled": false,
-  "fittencode.showSubmenu": true,
-  "fittencode.languagePreference.displayPreference": "zh-cn",
+  "editor.indentSize": "tabSize",
+  "editor.inlineSuggest.showToolbar": "onHover",
+  "editor.minimap.autohide": "none",
+  "editor.minimap.enabled": true,
+  "editor.minimap.markSectionHeaderRegex": "\\bMARK:\\s*(?<separator>-?)\\s*(?<label>.*)$",
+  "editor.minimap.maxColumn": 30,
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.scale": 1,
+  "editor.minimap.sectionHeaderFontSize": 5,
+  "editor.minimap.sectionHeaderLetterSpacing": 2,
+  "editor.minimap.showMarkSectionHeaders": true,
+  "editor.minimap.showRegionSectionHeaders": true,
+  "editor.minimap.showSlider": "always",
+  "editor.minimap.side": "right",
+  "editor.minimap.size": "fit",
+  "editor.stickyScroll.defaultModel": "foldingProviderModel",
+  "editor.stickyScroll.enabled": true,
+  "editor.stickyScroll.maxLineCount": 4,
+  "editor.stickyScroll.scrollWithEditor": true,
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": false,
+    "**/.hg": true,
+    "**/.svn": true,
+    "**/.vscode": false,
+    "**/CVS": true,
+    "**/Thumbs.db": true
+  },
+  "files.insertFinalNewline": true,
+  "git.autoRepositoryDetection": true,
   "git.autoStash": true,
   "git.enableSmartCommit": true,
   "git.smartCommitChanges": "all",
   "git.suggestSmartCommit": true,
-  "git.autoRepositoryDetection": true,
-  "files.exclude": {
-    "**/.git": false,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "**/.vscode": false
-  },
-  "biome.enabled": true,
-  "workbench.editor.titleScrollbarSizing": "default",
-  "CodeGPT.apiKey": "CodeGPT Plus",
-  "workbench.tree.indent": 20
+  "http.proxy": "http://127.0.0.1:10809",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "disabled",
+  "liveServer.settings.port": 5501,
+  "maven.executable.path": "D:\\program_green_win\\program_lib\\maven\\apache-maven-3.9.12-bin\\apache-maven-3.9.12\\bin\\",
+  "notebook.stickyScroll.enabled": true,
+  "notebook.stickyScroll.mode": "indented",
+  "npm.packageManager": "npm",
+  "security.workspace.trust.enabled": false,
+  "svg.preview.background": "transparent",
+  "terminal.explorerKind": "integrated",
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.defaultLocation": "view",
+  "terminal.integrated.defaultProfile.linux": null,
+  "terminal.integrated.defaultProfile.osx": null,
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.suggest.enabled": true,
+  "terminal.integrated.tabs.enabled": true,
+  "window.autoDetectColorScheme": true,
+  "workbench.colorTheme": "Visual Studio Light",
+  "workbench.editor.untitled.labelFormat": "name",
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.list.openMode": "doubleClick",
+  "workbench.tree.enableStickyScroll": true,
+  "workbench.tree.indent": 12,
 }

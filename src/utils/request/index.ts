@@ -35,7 +35,7 @@ const logStyles = {
 /** 判断是否是 mock 请求（根据 URL 判断） */
 const isMockRequest = (url: string) => {
   // 后端真实接口路径
-  const realApiPaths = ['/api/auth/', '/api/sys/'];
+  const realApiPaths = ['/api/auth/', '/api/sys/', '/api/bookmark/'];
   return !realApiPaths.some((path) => url.includes(path));
 };
 
@@ -197,7 +197,7 @@ const transform: AxiosTransform = {
       if (
         Reflect.has(config, 'data') &&
         config.data &&
-        (Object.keys(config.data).length > 0 || data instanceof FormData)
+        (Array.isArray(data) || Object.keys(config.data).length > 0 || data instanceof FormData)
       ) {
         config.data = data;
         config.params = params;

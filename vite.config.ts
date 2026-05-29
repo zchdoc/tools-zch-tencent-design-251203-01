@@ -55,6 +55,10 @@ export default ({ mode }: ConfigEnv): UserConfig => {
           target: VITE_AUTH_API_TARGET || 'http://127.0.0.1:8079',
           changeOrigin: true,
         },
+        '/api/bookmark': {
+          target: VITE_AUTH_API_TARGET || 'http://127.0.0.1:8079',
+          changeOrigin: true,
+        },
         // 其他 API 保持原有代理（如果需要）
         [VITE_API_URL_PREFIX]: {
           target: VITE_API_TARGET || 'http://127.0.0.1:3000/',
