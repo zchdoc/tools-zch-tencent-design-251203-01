@@ -48,6 +48,9 @@ router.beforeEach(async (to, from, next) => {
     }
 
     try {
+      // 先检查并刷新即将过期的 Token（避免用户使用中途过期）
+      await userStore.checkAndRefreshToken();
+
       // 3. 获取用户信息（如果还没有）
       if (!userStore.userInfo?.id) {
         await userStore.getUserInfo();

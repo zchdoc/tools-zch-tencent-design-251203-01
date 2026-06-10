@@ -104,6 +104,38 @@ export const useUserStore = defineStore('user', {
     },
 
     /**
+     * 检查并刷新 Token（应用启动时调用）
+     * 如果 Access Token 将在 10 分钟内过期，主动刷新，避免用户使用中途过期
+     */
+    async checkAndRefreshToken() {
+      if (!this.token || !this.refreshToken) return;
+
+      try {
+        // 解析 JWT payload 获取过期时间（不验签，仅读取）
+        const parts = this.token.split('.');
+        if (parts.length !== 3) return;
+
+        const payload = JSON.parse(atob(parts[1]));
+        const exp = payload.exp * 1000; // 转为毫秒时间戳
+        const now = Date.now();
+        const tenMinutes = 10 * 60 * 1000;
+
+        // Token 将在 10 分钟内过期，主动刷新
+        if (exp - now < tenMinutes) {
+          console.log('[Auth] Token 即将过期，主动刷新中...');
+          const { refreshToken: refreshTokenApi } = await import('@/api/auth');
+          const res = await refreshTokenApi({ refreshToken: this.refreshToken });
+          this.token = res.accessToken;
+          this.refreshToken = res.refreshToken;
+          console.log('[Auth] Token 主动刷新成功');
+        }
+      } catch (e) {
+        console.warn('[Auth] Token 刷新检查失败', e);
+        // 静默失败，不影响用户使用，等 401 时再被动刷新
+      }
+    },
+
+    /**
      * 检查是否有指定权限
      */
     hasPermission(code: string): boolean {

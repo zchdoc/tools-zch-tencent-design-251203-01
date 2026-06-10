@@ -122,6 +122,36 @@ const logError = (error: any) => {
 };
 
 // 数据处理，方便区分多种处理方式
+
+// ========== Token 自动刷新机制 ==========
+/** 是否正在刷新 Token 中 */
+let isRefreshing = false;
+/** 等待 Token 刷新后重试的请求队列 */
+let refreshSubscribers: Array<(newToken: string) => void> = [];
+/** 刷新失败后的跳转标记，防止多次跳转 */
+let hasRedirectedToLogin = false;
+
+/** 通知所有等待的请求用新 Token 重试 */
+function onTokenRefreshed(newToken: string) {
+  refreshSubscribers.forEach((callback) => callback(newToken));
+  refreshSubscribers = [];
+}
+
+/** 将失败的请求加入等待队列 */
+function addRefreshSubscriber(callback: (token: string) => void) {
+  refreshSubscribers.push(callback);
+}
+
+/** 跳转到登录页（带防重入） */
+function redirectToLogin() {
+  if (hasRedirectedToLogin) return;
+  hasRedirectedToLogin = true;
+  const userStore = useUserStore();
+  userStore.logout();
+  window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+}
+// ========================================
+
 const transform: AxiosTransform = {
   // 处理请求数据。如果数据不是预期格式，可直接抛出错误
   transformRequestHook: (res, options) => {
@@ -253,13 +283,64 @@ const transform: AxiosTransform = {
     // 打印错误日志
     logError(error);
 
-    // 处理 401 未授权错误 - Token 过期或无效
+    // ========== 处理 401 未授权错误 - Token 过期或无效 ==========
     if (response?.status === 401) {
       const userStore = useUserStore();
-      userStore.logout();
-      // 跳转到登录页
-      window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
-      return Promise.reject(new Error('登录已过期，请重新登录'));
+      const { refreshToken } = userStore;
+      const requestUrl = config?.url || '';
+
+      // 1. 刷新请求本身 401 → Refresh Token 也过期/无效，直接跳转登录
+      if (requestUrl.includes('/auth/refresh')) {
+        redirectToLogin();
+        return Promise.reject(new Error('登录已过期，请重新登录'));
+      }
+
+      // 2. 没有 Refresh Token → 直接跳转登录
+      if (!refreshToken) {
+        redirectToLogin();
+        return Promise.reject(new Error('登录已过期，请重新登录'));
+      }
+
+      // 3. 正在刷新中 → 当前请求加入队列等待新 Token
+      if (isRefreshing) {
+        return new Promise((resolve) => {
+          addRefreshSubscriber((newToken: string) => {
+            config.headers.Authorization = `Bearer ${newToken}`;
+            resolve(instance.request(config));
+          });
+        });
+      }
+
+      // 4. 开始刷新 Token
+      isRefreshing = true;
+
+      return new Promise((resolve, reject) => {
+        import('@/api/auth')
+          .then(({ refreshToken: refreshTokenApi }) => {
+            return refreshTokenApi({ refreshToken });
+          })
+          .then((res) => {
+            // 刷新成功：更新 store 中的 Token
+            userStore.token = res.accessToken;
+            userStore.refreshToken = res.refreshToken;
+
+            // 用新 Token 重试当前请求
+            config.headers.Authorization = `Bearer ${res.accessToken}`;
+
+            // 通知队列中等待的所有请求
+            onTokenRefreshed(res.accessToken);
+
+            resolve(instance.request(config));
+          })
+          .catch((refreshError: any) => {
+            // 刷新失败（Refresh Token 也过期/无效）
+            redirectToLogin();
+            reject(refreshError);
+          })
+          .finally(() => {
+            isRefreshing = false;
+          });
+      });
     }
 
     // 处理 403 无权限错误
