@@ -3,19 +3,29 @@
     <template v-for="item in list" :key="item.path">
       <template v-if="!item.children || !item.children.length || item.meta?.single">
         <t-menu-item v-if="getHref(item)" :name="item.path" :value="getPath(item)" @click="openHref(getHref(item)[0])">
+          <template v-if="showIcon && item.icon" #icon>
+            <t-icon :name="item.icon as string" />
+          </template>
           {{ renderMenuTitle(item.title) }}
         </t-menu-item>
         <t-menu-item v-else :name="item.path" :value="getPath(item)" :to="item.path">
+          <template v-if="showIcon && item.icon" #icon>
+            <t-icon :name="item.icon as string" />
+          </template>
           {{ renderMenuTitle(item.title) }}
         </t-menu-item>
       </template>
       <t-submenu v-else :name="item.path" :value="item.path" :title="renderMenuTitle(item.title)">
-        <menu-content v-if="item.children" :nav-data="item.children" />
+        <template v-if="showIcon && item.icon" #icon>
+          <t-icon :name="item.icon as string" />
+        </template>
+        <menu-content v-if="item.children" :nav-data="item.children" :level="level + 1" />
       </t-submenu>
     </template>
   </div>
 </template>
 <script setup lang="tsx">
+import { Icon as TIcon } from 'tdesign-icons-vue-next';
 import type { PropType } from 'vue';
 import { computed } from 'vue';
 
@@ -23,12 +33,19 @@ import { useLocale } from '@/locales/useLocale';
 import { getActive } from '@/router';
 import type { MenuRoute } from '@/types/interface';
 
-const { navData } = defineProps({
+const { navData, level } = defineProps({
   navData: {
     type: Array as PropType<MenuRoute[]>,
     default: () => [],
   },
+  level: {
+    type: Number,
+    default: 0,
+  },
 });
+
+/** 仅一级导航显示图标 */
+const showIcon = computed(() => level === 1);
 
 const active = computed(() => getActive());
 
@@ -57,6 +74,7 @@ const getMenuList = (list: MenuRoute[], basePath?: string): MenuRoute[] => {
       return {
         path,
         title: item.meta?.title,
+        icon: item.meta?.icon,
         children: getMenuList(item.children, path),
         meta: item.meta,
         redirect: item.redirect,

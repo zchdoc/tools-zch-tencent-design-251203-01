@@ -14,7 +14,7 @@
           <component :is="getLogo()" :class="logoCls" />
         </span>
       </template>
-      <menu-content :nav-data="menu" />
+      <menu-content :nav-data="menu" :level="1" />
       <template #operations>
         <span :class="versionCls"> {{ !collapsed ? 'TDesign Starter' : '' }} {{ pgk.version }} </span>
       </template>
