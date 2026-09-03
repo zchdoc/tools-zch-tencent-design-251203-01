@@ -20,6 +20,7 @@ import result from './result';
 import rmbConverter from './rmb-converter';
 import system from './system';
 import user from './user';
+import xbBbsEnc from './xb-bbs-enc';
 
 export default {
   bookmarkZch,
@@ -42,6 +43,7 @@ export default {
   rmbConverter,
   system,
   user,
+  xbBbsEnc,
   login,
   result,
 };
