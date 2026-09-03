@@ -84,6 +84,23 @@
       position: fixed;
       overflow: visible;
       z-index: 100;
+
+      // TDesign Tabs 默认 medium 高度是 48px，多页签栏略压低，给内容区多留一点垂直空间
+      .t-tabs__nav-item.t-size-m,
+      .t-tabs__btn.t-size-m,
+      .t-tabs__scroll-btn.t-size-m {
+        height: var(--td-comp-size-l);
+        line-height: var(--td-comp-size-l);
+      }
+
+      .t-tabs__nav--card.t-tabs__nav-item {
+        padding-left: var(--td-comp-paddingLR-m);
+        padding-right: var(--td-comp-paddingLR-m);
+      }
+
+      .t-tabs__content {
+        display: none;
+      }
     }
     &-tabs-nav + .@{starter-prefix}-content-layout {
       padding-top: var(--td-comp-paddingTB-xxl);

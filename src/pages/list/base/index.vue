@@ -238,7 +238,7 @@ const handleClickDelete = (row: { rowIndex: any }) => {
 const headerAffixedTop = computed(
   () =>
     ({
-      offsetTop: store.isUseTabsRouter ? 48 : 0,
+      offsetTop: store.isUseTabsRouter ? 36 : 0,
       container: `.${prefix}-layout`,
     }) as any,
 );
