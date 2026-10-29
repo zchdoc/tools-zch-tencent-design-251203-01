@@ -86,7 +86,7 @@ function buildMenuTree(menus: MenuTreeResponse[]): MenuTreeResponse[] {
 export const usePermissionStore = defineStore('permission', {
   state: () => ({
     /** 白名单路由路径 */
-    whiteListRouters: ['/login', '/register', '/404', '/403', '/bookmark/zch', '/error'],
+    whiteListRouters: ['/login', '/register', '/404', '/403', '/bookmark/zch', '/tools/xb-bbs-enc', '/error'],
     /** 所有路由 */
     routers: [] as RouteRecordRaw[],
     /** 移除的路由 */

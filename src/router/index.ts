@@ -59,6 +59,26 @@ export const publicRouterList: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    // 单独挂完整路径，避免和登录后动态下发的 /tools 父路由抢匹配
+    path: '/tools/xb-bbs-enc',
+    component: Layout,
+    name: 'xbBbsEncPublic',
+    meta: {
+      title: { zh_CN: 'XBBSEnc', en_US: 'XBBSEnc' },
+      hidden: true,
+    },
+    children: [
+      {
+        path: '',
+        name: 'XBBSEncPublic',
+        component: () => import('@/pages/tools/xb-bbs-enc/index.vue'),
+        meta: {
+          title: { zh_CN: 'XBBSEnc', en_US: 'XBBSEnc' },
+        },
+      },
+    ],
+  },
 ];
 
 // =====================================================
