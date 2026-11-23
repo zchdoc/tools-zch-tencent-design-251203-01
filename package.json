@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^12.3.0",
-    "axios": "^1.20.0",
+    "axios": "^1.21.1",
     "crypto-es": "^3.1.3",
     "dayjs": "^1.11.23",
     "echarts": "6.1.0",
@@ -34,13 +34,13 @@
     "nprogress": "^0.2.0",
     "pinia": "2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",
-    "qrcode.vue": "^3.11.0",
-    "qs": "^6.16.0",
-    "tdesign-icons-vue-next": "^0.4.11",
-    "tdesign-vue-next": "^1.20.7",
+    "qrcode.vue": "^3.11.1",
+    "qs": "^6.17.1",
+    "tdesign-icons-vue-next": "^0.4.12",
+    "tdesign-vue-next": "^1.20.11",
     "tvision-color": "^1.6.0",
-    "vue": "^3.5.42",
-    "vue-i18n": "11.4.10",
+    "vue": "^3.5.45",
+    "vue-i18n": "11.4.23",
     "vue-router": "~4.6.4"
   },
   "devDependencies": {
@@ -62,7 +62,7 @@
     "eslint-plugin-prettier": "^5.5.7",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-vue-scoped-css": "^2.12.0",
-    "globals": "^17.12.0",
+    "globals": "^17.14.0",
     "husky": "^9.1.7",
     "less": "^4.9.1",
     "lint-staged": "^16.4.0",
@@ -70,16 +70,16 @@
     "postcss-html": "^1.8.0",
     "postcss-less": "^6.0.0",
     "prettier": "^3.10.1",
-    "unrs-resolver": "^1.12.2",
+    "unrs-resolver": "^1.13.0",
     "stylelint": "^16.18.0",
     "stylelint-config-standard": "^39.0.1",
     "stylelint-order": "~7.0.1",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.70.0",
+    "typescript-eslint": "^8.73.0",
     "vite": "^6.2.2",
     "vite-plugin-mock": "^3.0.1",
     "vite-svg-loader": "^5.1.3",
-    "vue-tsc": "^3.3.11"
+    "vue-tsc": "^3.3.14"
   },
   "config": {
     "commitizen": {
